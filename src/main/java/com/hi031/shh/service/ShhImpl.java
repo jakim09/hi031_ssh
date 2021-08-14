@@ -6,14 +6,143 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.hi031.shh.domain.BusinessAccount;
+import com.hi031.shh.domain.ConsumerAccount;
 import com.hi031.shh.domain.Coupon;
+import com.hi031.shh.repository.BusinessAccountRepository;
+import com.hi031.shh.repository.ConsumerAccountRepository;
 import com.hi031.shh.repository.CouponRepository;
 
 @Service
 public class ShhImpl implements ShhFacade {
 	@Autowired
+	private BusinessAccountRepository businessAccountRepo;
+	@Autowired
+	private ConsumerAccountRepository consumerAccountRepo;
+	@Autowired
 	private CouponRepository couponRepo;
 
+	@Override
+	public BusinessAccount businessLogin(String businessUserId, String password) {
+		Optional<BusinessAccount> result = businessAccountRepo.findByBusinessUserIdAndPassword(businessUserId, password);
+		
+		if (result.isPresent()) {
+			return result.get();
+		} else {
+			return null;
+		}
+	}
+
+	@Override
+	public BusinessAccount insertBusinessAccount(BusinessAccount businessAccount) {
+		return businessAccountRepo.save(businessAccount);
+	}
+
+	@Override
+	public String findBusinessUserId(String name, String email) {
+		Optional<BusinessAccount> result = businessAccountRepo.findByNameAndEmail(name, email);
+
+		if (result.isPresent()) {
+			return result.get().getBusinessUserId();
+		} else {
+			return null;
+		}
+	}
+
+	@Override
+	public BusinessAccount findBusinessPw(String businessUserId, String email) {
+		Optional<BusinessAccount> result = businessAccountRepo.findByBusinessUserIdAndEmail(businessUserId, email);
+
+		if (result.isPresent()) {
+			return result.get();
+		} else {
+			return null;
+		}
+	}
+
+	@Override
+	public BusinessAccount getBusinessAccount(String businessUserId) {
+		Optional<BusinessAccount> result = businessAccountRepo.findByBusinessUserId(businessUserId);
+		
+		if (result.isPresent()) {
+			return result.get();
+		} else {
+			return null;
+		}
+	}
+
+	@Override
+	public BusinessAccount updateBusinessAccount(BusinessAccount businessAccount) {
+		return businessAccountRepo.save(businessAccount);
+	}
+
+	@Override
+	public BusinessAccount removeBusinessAccount(BusinessAccount businessAccount) {
+		businessAccount.setState(2);
+
+		return businessAccountRepo.save(businessAccount);
+	}
+
+	@Override
+	public ConsumerAccount consumerLogin(String consumerUserId, String password) {
+		Optional<ConsumerAccount> result = consumerAccountRepo.findByConsumerUserIdAndPassword(consumerUserId, password);
+		
+		if (result.isPresent()) {
+			return result.get();
+		} else {
+			return null;
+		}
+	}
+
+	@Override
+	public ConsumerAccount insertConsumerAccount(ConsumerAccount consumerAccount) {
+		return consumerAccountRepo.save(consumerAccount);
+	}
+
+	@Override
+	public String findConsumerUserId(String name, String email) {
+		Optional<ConsumerAccount> result = consumerAccountRepo.findByNameAndEmail(name, email);
+
+		if (result.isPresent()) {
+			return result.get().getConsumerUserId();
+		} else {
+			return null;
+		}
+	}
+
+	@Override
+	public ConsumerAccount findConsumerPw(String consumerUserId, String email) {
+		Optional<ConsumerAccount> result = consumerAccountRepo.findByConsumerUserIdAndEmail(consumerUserId, email);
+
+		if (result.isPresent()) {
+			return result.get();
+		} else {
+			return null;
+		}
+	}
+
+	@Override
+	public ConsumerAccount getConsumerAccount(String consumerUserId) {
+		Optional<ConsumerAccount> result = consumerAccountRepo.findByConsumerUserId(consumerUserId);	
+		if (result.isPresent()) {
+			return result.get();
+		} else {
+			return null;
+		}
+	}
+
+	@Override
+	public ConsumerAccount updateConsumerAccount(ConsumerAccount consumerAccount) {
+		return consumerAccountRepo.save(consumerAccount);
+	}
+
+	@Override
+	public ConsumerAccount removeConsumerAccount(ConsumerAccount consumerAccount) {
+		consumerAccount.setState(2);
+		
+		return consumerAccountRepo.save(consumerAccount);
+	}
+	
 	@Override
 	public Coupon insertCoupon(Coupon coupon) {
 		Coupon newCoupon = couponRepo.save(coupon);
@@ -51,5 +180,6 @@ public class ShhImpl implements ShhFacade {
 	public long getCount(int storeId) {
 		return couponRepo.countByStoreId(storeId);
 	}
+
 	
 }
