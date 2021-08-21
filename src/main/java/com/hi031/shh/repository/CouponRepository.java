@@ -10,4 +10,5 @@ import com.hi031.shh.domain.Coupon;
 public interface CouponRepository extends PagingAndSortingRepository<Coupon, Integer>{
 	List<Coupon> findByStoreId(int storeId) throws DataAccessException;
 	public long countByStoreId(int storeId);
+	
 }
