@@ -13,7 +13,7 @@ import com.hi031.shh.repository.BusinessAccountRepository;
 import com.hi031.shh.repository.ConsumerAccountRepository;
 
 import com.hi031.shh.domain.Store;
-
+import com.hi031.shh.mapper.StoreMapper;
 import com.hi031.shh.repository.CouponRepository;
 import com.hi031.shh.repository.StoreRepository;
 
@@ -28,6 +28,8 @@ public class ShhImpl implements ShhFacade {
 	
 	@Autowired
 	private StoreRepository storeRepo;
+	@Autowired
+	private StoreMapper storeMapper;
 
 	@Override
 	public BusinessAccount businessLogin(String businessUserId, String password) {
@@ -223,32 +225,27 @@ public class ShhImpl implements ShhFacade {
 
 	@Override
 	public List<Store> getAllStores() {
-		// TODO Auto-generated method stub
-		return null;
+		return (List<Store>) storeRepo.findAll();
 	}
 
 	@Override
 	public List<Store> getStoresByName(int type, String keyword, int start, int end) {
-		// TODO Auto-generated method stub
-		return null;
+		return storeMapper.getStoresByName(keyword, start, end);
 	}
 
 	@Override
 	public List<Store> getStoresByMainCategory(int type, String keyword, int start, int end) {
-		// TODO Auto-generated method stub
-		return null;
+		return storeMapper.getStoresByMainCategory(keyword, start, end);
 	}
 
 	@Override
 	public List<Store> getStoresBySubCategory(int type, String keyword, int start, int end) {
-		// TODO Auto-generated method stub
-		return null;
+		return storeMapper.getStoresBySubCategory(keyword, start, end);
 	}
 
 	@Override
 	public List<Store> getStoresByLocation(int type, String keyword, int start, int end) {
-		// TODO Auto-generated method stub
-		return null;
+		return storeMapper.getStoresByLocation(keyword, start, end);
 	}
 
 	@Override
