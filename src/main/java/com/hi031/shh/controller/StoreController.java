@@ -57,5 +57,37 @@ public class StoreController {
 		
 		return responseWrapper;
 	}
+	
+	@ResponseBody
+	@RequestMapping(path="/{type}{keyword}{start}{end}", method=RequestMethod.GET)
+	public ResponseWrapper getStoresByParams(@PathVariable int type, String keyword, int start, int end) throws Exception {
+		
+		if(type == 1) {
+			List<Store> results = shh.getStoresByName(type, keyword, start, end);
+			//total 어떻게 받아야 될 지 몰라서 임시로 해둠..!
+			long total = 2;
+			
+			responseWrapper = new ResponseWrapper(total, (List<Object>)(Object)results);
+		} else if(type == 2){
+			List<Store> results = shh.getStoresByMainCategory(type, keyword, start, end);
+			long total = 3;
+			
+			responseWrapper = new ResponseWrapper(total, (List<Object>)(Object)results);
+		} else if(type == 3)
+		{
+			List<Store> results = shh.getStoresBySubCategory(type, keyword, start, end);
+			long total = 3;
+			
+			responseWrapper = new ResponseWrapper(total, (List<Object>)(Object)results);
+		} else {
+			List<Store> results = shh.getStoresByLocation(type, keyword, start, end);
+			long total = 3;
+			
+			responseWrapper = new ResponseWrapper(total, (List<Object>)(Object)results);
+		} 
+			
+		
+		return responseWrapper;
+	}
 
 }
