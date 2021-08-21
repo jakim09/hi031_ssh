@@ -1,8 +1,10 @@
 package com.hi031.shh.domain;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class ResponseWrapper {
+@SuppressWarnings("serial")
+public class ResponseWrapper implements Serializable {
 	private long total;
 	private List<Object> results;
 	public long getTotal() {
