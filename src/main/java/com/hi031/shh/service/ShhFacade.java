@@ -5,6 +5,7 @@ import java.util.List;
 import com.hi031.shh.domain.BusinessAccount;
 import com.hi031.shh.domain.ConsumerAccount;
 import com.hi031.shh.domain.Coupon;
+import com.hi031.shh.domain.Link;
 import com.hi031.shh.domain.Store;
 
 public interface ShhFacade {
@@ -30,6 +31,14 @@ public interface ShhFacade {
 	Coupon getCoupon(int couponId);
 	List<Coupon> getCoupons(int storeId);
 	long getCount(int storeId);
+	Link insertLink(Link link);
+	Link updateLink(Link link);
+	Link getLink(int proposerId, int receiverId);
+	List<Link> getLinks(int storeId);
+	long countByProposerId(int proposerId);
+	List<Link> getLinksByReceiver(int receiverId);
+	List<Link> getLinksByProposer(int proposerId);
+	void removeLink(int linkId);
 	
 	Store insertStore(Store store);
 	Store updateStore(Store store);

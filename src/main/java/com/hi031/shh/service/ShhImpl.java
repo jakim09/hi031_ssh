@@ -4,16 +4,22 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.hi031.shh.domain.BusinessAccount;
 import com.hi031.shh.domain.ConsumerAccount;
 import com.hi031.shh.domain.Coupon;
+import com.hi031.shh.domain.Link;
+import com.hi031.shh.repository.CouponRepository;
+import com.hi031.shh.repository.LinkRepository;
 import com.hi031.shh.repository.BusinessAccountRepository;
 import com.hi031.shh.repository.ConsumerAccountRepository;
 
 import com.hi031.shh.domain.Store;
-
+import com.hi031.shh.mapper.StoreMapper;
 import com.hi031.shh.repository.CouponRepository;
 import com.hi031.shh.repository.StoreRepository;
 
@@ -28,6 +34,8 @@ public class ShhImpl implements ShhFacade {
 	
 	@Autowired
 	private StoreRepository storeRepo;
+	@Autowired
+	private StoreMapper storeMapper;
 
 	@Override
 	public BusinessAccount businessLogin(String businessUserId, String password) {
@@ -138,6 +146,9 @@ public class ShhImpl implements ShhFacade {
 		}
 	}
 
+	@Autowired
+	private LinkRepository linkRepo;
+	
 	@Override
 	public ConsumerAccount updateConsumerAccount(ConsumerAccount consumerAccount) {
 		return consumerAccountRepo.save(consumerAccount);
@@ -189,7 +200,26 @@ public class ShhImpl implements ShhFacade {
 	}
 
 	@Override
-	public Store insertStore(Store store) {
+	public Link insertLink(Link link) {
+		Link newLink = linkRepo.save(link);
+		return newLink;
+	}
+	
+	@Override
+	public Link updateLink(Link link) {
+		Link updateLink = linkRepo.save(link);
+		return updateLink;
+	}
+
+	public void removeLink(int linkId) {
+		linkRepo.deleteById(linkId);
+	}
+	
+	@Override
+	public Link getLink(int proposerId, int receiverId) {
+		return linkRepo.findByProposerIdAndReceiverId(proposerId, receiverId);
+
+  public Store insertStore(Store store) {
 		Store newStore = storeRepo.save(store);
 		return newStore;
 	}
@@ -223,32 +253,27 @@ public class ShhImpl implements ShhFacade {
 
 	@Override
 	public List<Store> getAllStores() {
-		// TODO Auto-generated method stub
-		return null;
+		return (List<Store>) storeRepo.findAll();
 	}
 
 	@Override
 	public List<Store> getStoresByName(int type, String keyword, int start, int end) {
-		// TODO Auto-generated method stub
-		return null;
+		return storeMapper.getStoresByName(keyword, start, end);
 	}
 
 	@Override
 	public List<Store> getStoresByMainCategory(int type, String keyword, int start, int end) {
-		// TODO Auto-generated method stub
-		return null;
+		return storeMapper.getStoresByMainCategory(keyword, start, end);
 	}
 
 	@Override
 	public List<Store> getStoresBySubCategory(int type, String keyword, int start, int end) {
-		// TODO Auto-generated method stub
-		return null;
+		return storeMapper.getStoresBySubCategory(keyword, start, end);
 	}
 
 	@Override
 	public List<Store> getStoresByLocation(int type, String keyword, int start, int end) {
-		// TODO Auto-generated method stub
-		return null;
+		return storeMapper.getStoresByLocation(keyword, start, end);
 	}
 
 	@Override
@@ -256,4 +281,24 @@ public class ShhImpl implements ShhFacade {
 		return storeRepo.countByBusinessUserId(businessUserId);
 	}
 	
+	@Override
+	public List<Link> getLinks(int storeId) {
+		return (List<Link>) linkRepo.findAll(Sort.by(Sort.Direction.DESC, "linkid"));
+	}
+	
+	@Override
+	public List<Link> getLinksByReceiver(int receiverId) {
+		return (List<Link>) linkRepo.findAll(Sort.by(Sort.Direction.DESC, "receiverId"));
+	}
+	
+	@Override
+	public List<Link> getLinksByProposer(int proposerId) {
+		return (List<Link>) linkRepo.findAll(Sort.by(Sort.Direction.DESC, "proposerId"));
+	}
+	
+	@Override
+	public long countByProposerId(int proposerId) {
+		return linkRepo.countByProposerId(proposerId);
+	}
+
 }
