@@ -19,6 +19,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class ConsumerCoupon implements Serializable{
+	
 	@Id
 	@Column(name="consumer_coupon_id")
 //	@GeneratedValue(strategy=GenerationType.IDENTITY)

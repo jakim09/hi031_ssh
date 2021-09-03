@@ -8,7 +8,6 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Repository;
 @Mapper
-@Repository
 public interface StoreMapper {
 
 	@Select("SELECT * FROM (SELECT a.*, ROWNUM AS rnum FROM (SELECT store_id, business_user_id, main_category_id, sub_category_id, name, address1, address2, telephone, store_image1, store_image2, store_image3, logo_image, introduce, short_introduce"
