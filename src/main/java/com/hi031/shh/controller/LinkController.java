@@ -44,13 +44,13 @@ public class LinkController {
 	
 	@ResponseBody
 	@RequestMapping(path="/{proposerId}/{receiverId}", method=RequestMethod.GET)
-	public List<Link> getLink(@PathVariable int proposerId, @PathVariable int receiverId) throws Exception {
+	public List<Link> getLink(@PathVariable String proposerId, @PathVariable String receiverId) throws Exception {
 		return shh.getLinksByProposer(proposerId);
 	}
 	
 	@ResponseBody
 	@RequestMapping(path="/{proposerId}", method=RequestMethod.GET)
-	public ResponseWrapper getLinks(@PathVariable int proposerId) throws Exception {
+	public ResponseWrapper getLinks(@PathVariable String proposerId) throws Exception {
 		List<Link> results = shh.getLinksByProposer(proposerId);
 		long total = shh.countByProposerId(proposerId);
 		
@@ -61,7 +61,7 @@ public class LinkController {
 	
 	@ResponseBody
 	@DeleteMapping("/{linkId}")  
-	  public void deleteBook(@PathVariable("linkId") int linkId) {  
+	  public void deleteBook(@PathVariable("linkId") String linkId) {  
 	    shh.removeLink(linkId);  
 	  }  
 	

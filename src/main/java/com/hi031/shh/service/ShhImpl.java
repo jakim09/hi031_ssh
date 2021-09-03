@@ -34,9 +34,11 @@ public class ShhImpl implements ShhFacade {
 	
 	@Autowired
 	private StoreRepository storeRepo;
-	@Autowired
-	private StoreMapper storeMapper;
+	//private StoreMapper storeMapper;
 
+	@Autowired
+	private LinkRepository linkRepo;
+	
 	@Override
 	public BusinessAccount businessLogin(String businessUserId, String password) {
 		Optional<BusinessAccount> result = businessAccountRepo.findByBusinessUserIdAndPassword(businessUserId, password);
@@ -146,8 +148,7 @@ public class ShhImpl implements ShhFacade {
 		}
 	}
 
-	@Autowired
-	private LinkRepository linkRepo;
+
 	
 	@Override
 	public ConsumerAccount updateConsumerAccount(ConsumerAccount consumerAccount) {
@@ -211,13 +212,13 @@ public class ShhImpl implements ShhFacade {
 		return updateLink;
 	}
 
-	public void removeLink(int linkId) {
-		linkRepo.deleteById(linkId);
+	public void removeLink(String linkId) {
+		linkRepo.deleteById(Integer.valueOf(linkId));
 	}
 	
 	@Override
-	public Link getLink(int proposerId, int receiverId) {
-		return linkRepo.findByProposerIdAndReceiverId(proposerId, receiverId);
+	public Link getLink(BusinessAccount proposer, BusinessAccount receiver) {
+		return linkRepo.findByProposerAndReceiver(proposer, receiver);
 	}
 	
   public Store insertStore(Store store) {
@@ -257,25 +258,25 @@ public class ShhImpl implements ShhFacade {
 		return (List<Store>) storeRepo.findAll();
 	}
 
-	@Override
-	public List<Store> getStoresByName(int type, String keyword, int start, int end) {
-		return storeMapper.getStoresByName(keyword, start, end);
-	}
+//	@Override
+//	public List<Store> getStoresByName(int type, String keyword, int start, int end) {
+		//return storeMapper.getStoresByName(keyword, start, end);
+	//}
 
-	@Override
-	public List<Store> getStoresByMainCategory(int type, String keyword, int start, int end) {
-		return storeMapper.getStoresByMainCategory(keyword, start, end);
-	}
-
-	@Override
-	public List<Store> getStoresBySubCategory(int type, String keyword, int start, int end) {
-		return storeMapper.getStoresBySubCategory(keyword, start, end);
-	}
-
-	@Override
-	public List<Store> getStoresByLocation(int type, String keyword, int start, int end) {
-		return storeMapper.getStoresByLocation(keyword, start, end);
-	}
+//	@Override
+//	public List<Store> getStoresByMainCategory(int type, String keyword, int start, int end) {
+//		return storeMapper.getStoresByMainCategory(keyword, start, end);
+//	}
+//
+//	@Override
+//	public List<Store> getStoresBySubCategory(int type, String keyword, int start, int end) {
+//		return storeMapper.getStoresBySubCategory(keyword, start, end);
+//	}
+//
+//	@Override
+//	public List<Store> getStoresByLocation(int type, String keyword, int start, int end) {
+//		return storeMapper.getStoresByLocation(keyword, start, end);
+//	}
 
 	@Override
 	public long getMyStoreCount(String businessUserId) {
@@ -283,23 +284,23 @@ public class ShhImpl implements ShhFacade {
 	}
 	
 	@Override
-	public List<Link> getLinks(int storeId) {
+	public List<Link> getLinks(String storeId) {
 		return (List<Link>) linkRepo.findAll(Sort.by(Sort.Direction.DESC, "linkid"));
 	}
 	
 	@Override
-	public List<Link> getLinksByReceiver(int receiverId) {
+	public List<Link> getLinksByReceiver(BusinessAccount receiver) {
 		return (List<Link>) linkRepo.findAll(Sort.by(Sort.Direction.DESC, "receiverId"));
 	}
 	
 	@Override
-	public List<Link> getLinksByProposer(int proposerId) {
+	public List<Link> getLinksByProposer(BusinessAccount proposer) {
 		return (List<Link>) linkRepo.findAll(Sort.by(Sort.Direction.DESC, "proposerId"));
 	}
 	
 	@Override
-	public long countByProposerId(int proposerId) {
-		return linkRepo.countByProposerId(proposerId);
+	public long countByProposer(BusinessAccount proposer) {
+		return linkRepo.countByProposer(proposer);
 	}
 
 	@Override
@@ -312,6 +313,30 @@ public class ShhImpl implements ShhFacade {
 	public long getCount(int storeId) {
 		// TODO Auto-generated method stub
 		return 0;
+	}
+
+	@Override
+	public List<Store> getStoresByName(int type, String keyword, int start, int end) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<Store> getStoresByMainCategory(int type, String keyword, int start, int end) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<Store> getStoresBySubCategory(int type, String keyword, int start, int end) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<Store> getStoresByLocation(int type, String keyword, int start, int end) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

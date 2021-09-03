@@ -33,12 +33,12 @@ public interface ShhFacade {
 	long getCount(int storeId);
 	Link insertLink(Link link);
 	Link updateLink(Link link);
-	Link getLink(int proposerId, int receiverId);
-	List<Link> getLinks(int storeId);
-	long countByProposerId(int proposerId);
-	List<Link> getLinksByReceiver(int receiverId);
-	List<Link> getLinksByProposer(int proposerId);
-	void removeLink(int linkId);
+	Link getLink(BusinessAccount proposer, BusinessAccount receiver);
+	List<Link> getLinks(String storeId);
+	long countByProposer(BusinessAccount proposer);
+	List<Link> getLinksByReceiver(BusinessAccount receiver);
+	List<Link> getLinksByProposer(BusinessAccount proposer);
+	void removeLink(String linkId);
 	
 	Store insertStore(Store store);
 	Store updateStore(Store store);
