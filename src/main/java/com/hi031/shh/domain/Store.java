@@ -20,7 +20,7 @@ public class Store implements Serializable {
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="STOREID_SEQ_GEN")
 	
 	@Column(name="store_id")
-	private int storId;
+	private int storeId;
 	@Column(name="business_user_id")
 	private String businessUserId;
 	@Column(name="main_category_id")
@@ -42,11 +42,11 @@ public class Store implements Serializable {
 	private String introduce;
 	@Column(name="short_introduce")
 	private String shortIntroduce;
-	public int getStorId() {
-		return storId;
+	public int getStoreId() {
+		return storeId;
 	}
-	public void setStorId(int storId) {
-		this.storId = storId;
+	public void setStoreId(int storId) {
+		this.storeId = storId;
 	}
 	public String getBusinessUserId() {
 		return businessUserId;
