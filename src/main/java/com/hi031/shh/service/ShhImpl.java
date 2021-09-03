@@ -189,15 +189,15 @@ public class ShhImpl implements ShhFacade {
 		}
 	}
 
-	@Override
-	public List<Coupon> getCoupons(int storeId) {
-		return couponRepo.findByStoreId(storeId);
-	}
+//	@Override
+	//public List<Coupon> getCoupons(int storeId) {
+		//return couponRepo.findByStoreId(storeId);
+//	}
 
-	@Override
-	public long getCount(int storeId) {
-		return couponRepo.countByStoreId(storeId);
-	}
+	//@Override
+	//public long getCount(int storeId) {
+		//return couponRepo.countByStoreId(storeId);
+//	}
 
 	@Override
 	public Link insertLink(Link link) {
@@ -218,7 +218,8 @@ public class ShhImpl implements ShhFacade {
 	@Override
 	public Link getLink(int proposerId, int receiverId) {
 		return linkRepo.findByProposerIdAndReceiverId(proposerId, receiverId);
-
+	}
+	
   public Store insertStore(Store store) {
 		Store newStore = storeRepo.save(store);
 		return newStore;
@@ -299,6 +300,18 @@ public class ShhImpl implements ShhFacade {
 	@Override
 	public long countByProposerId(int proposerId) {
 		return linkRepo.countByProposerId(proposerId);
+	}
+
+	@Override
+	public List<Coupon> getCoupons(int storeId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public long getCount(int storeId) {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 
 }
