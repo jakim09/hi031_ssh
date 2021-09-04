@@ -68,7 +68,7 @@ public class BusinessAccountController {
 
 	// 회원 수정 정보 가져오기
 	@ResponseBody
-	@RequestMapping(path="/api/v1/businessUser", method=RequestMethod.GET)
+	@RequestMapping(path="/api/v1/businessUser/{businessUserId}", method=RequestMethod.GET)
 	public BusinessAccount getBusinessAccount(@PathVariable String businessUserId) throws Exception {
 		return shh.getBusinessAccount(businessUserId);
 	}

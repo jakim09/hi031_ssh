@@ -15,6 +15,7 @@ public class BusinessAccount implements Serializable {
 	@Id
 	@Column(name="business_user_id")
 	private String businessUserId;
+	@Column(name="pwd")
 	private String password;
 	private String name;
 	private String email;
@@ -23,6 +24,7 @@ public class BusinessAccount implements Serializable {
 	@OneToMany
 	@JoinColumn(name="business_user_id")
 	private List<Store> stores;
+	@Column(name="is_available")
 	private int state;
 	
 	public BusinessAccount() {}

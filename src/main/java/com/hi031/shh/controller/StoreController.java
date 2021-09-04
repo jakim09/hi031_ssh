@@ -42,7 +42,7 @@ public class StoreController {
 	}
 	
 	@ResponseBody
-	@RequestMapping(path="/{storeId}", method=RequestMethod.GET)
+	@RequestMapping(path="/detail/{storeId}", method=RequestMethod.GET)
 	public Store getStore(@PathVariable int storeId) throws Exception {
 		return shh.getStore(storeId);
 	}
