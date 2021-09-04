@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.hi031.shh.domain.BusinessAccount;
 import com.hi031.shh.domain.Coupon;
 import com.hi031.shh.domain.Link;
 import com.hi031.shh.domain.ResponseWrapper;
@@ -34,7 +35,7 @@ public class LinkController {
 	
 	@ResponseBody
 	@PutMapping("/{state}")  
-	public Link updateCoupon(@PathVariable("state") int state,  
+	public Link updateLink(@PathVariable("state") int state,  
             @RequestBody Link link) throws Exception {
 		link.setState(state);
 		Link updated = shh.insertLink(link);
@@ -45,14 +46,16 @@ public class LinkController {
 	@ResponseBody
 	@RequestMapping(path="/{proposerId}/{receiverId}", method=RequestMethod.GET)
 	public List<Link> getLink(@PathVariable String proposerId, @PathVariable String receiverId) throws Exception {
-		return shh.getLinksByProposer(proposerId);
+		BusinessAccount proposer = shh.getBusinessAccount(proposerId);
+		return shh.getLinksByProposer(proposer);
 	}
 	
 	@ResponseBody
 	@RequestMapping(path="/{proposerId}", method=RequestMethod.GET)
 	public ResponseWrapper getLinks(@PathVariable String proposerId) throws Exception {
-		List<Link> results = shh.getLinksByProposer(proposerId);
-		long total = shh.countByProposerId(proposerId);
+		BusinessAccount proposer = shh.getBusinessAccount(proposerId);
+		List<Link> results = shh.getLinksByProposer(proposer);
+		long total = shh.countByProposer(proposer);
 		
 		responseWrapper = new ResponseWrapper(total, (List<Object>)(Object)results);
 		
@@ -61,7 +64,7 @@ public class LinkController {
 	
 	@ResponseBody
 	@DeleteMapping("/{linkId}")  
-	  public void deleteBook(@PathVariable("linkId") String linkId) {  
+	  public void deleteLink(@PathVariable("linkId") String linkId) {  
 	    shh.removeLink(linkId);  
 	  }  
 	
