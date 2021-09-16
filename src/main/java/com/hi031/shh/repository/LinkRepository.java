@@ -13,10 +13,11 @@ import com.hi031.shh.domain.Link;
 @EnableJpaRepositories
 public interface LinkRepository extends PagingAndSortingRepository<Link, Integer>, CrudRepository<Link, Integer>  {
 	List<Link> findByLinkId(String linkId) throws DataAccessException;
-	List<Link> findByProposer(BusinessAccount proposer) throws DataAccessException;
-	List<Link> findByReceiver(BusinessAccount receiver) throws DataAccessException;
-	public long countByProposer(BusinessAccount proposer) throws DataAccessException;
-	Link findByProposerAndReceiver(BusinessAccount proposer, BusinessAccount receiverId) throws DataAccessException;
-	
-	
+	List<Link> findByProposerId(String proposerId) throws DataAccessException;
+	List<Link> findByReceiverId(String receiverId) throws DataAccessException;
+	public long countByProposerId(String proposerId) throws DataAccessException;
+	Link findByProposerIdAndReceiverId(String proposerId, String receiverId) throws DataAccessException;
+	List<Link> findLinkByReceiverIdAndStateAndManagement(String receiverId, int state, int managemnet) throws DataAccessException;
+	List<Link> findLinkByProposerIdAndStateAndManagement(String proposerId, int state, int managemnet) throws DataAccessException;
+
 }
