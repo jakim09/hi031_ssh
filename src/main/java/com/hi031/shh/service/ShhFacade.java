@@ -31,14 +31,15 @@ public interface ShhFacade {
 	Coupon getCoupon(int couponId);
 	List<Coupon> getCoupons(int storeId);
 	long getCount(int storeId);
+	
 	Link insertLink(Link link);
 	Link updateLink(Link link);
-	Link getLink(BusinessAccount proposer, BusinessAccount receiver);
-	List<Link> getLinks(String storeId);
-	long countByProposer(BusinessAccount proposer);
-	List<Link> getLinksByReceiver(BusinessAccount receiver);
-	List<Link> getLinksByProposer(BusinessAccount proposer);
-	void removeLink(String linkId);
+	Link getLink(String proposerId, String receiverId);
+	List<Link> getLinks(String storeId, int state, int managemnet);
+	long countByProposerId(String proposerId);
+	List<Link> getLinksByReceiverId(String receiverId);
+	List<Link> getLinksByProposerId(String proposerId);
+	void removeLink(Link link);
 	
 	Store insertStore(Store store);
 	Store updateStore(Store store);

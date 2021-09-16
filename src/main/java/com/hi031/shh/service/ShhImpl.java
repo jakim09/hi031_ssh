@@ -202,23 +202,16 @@ public class ShhImpl implements ShhFacade {
 
 	@Override
 	public Link insertLink(Link link) {
-		Link newLink = linkRepo.save(link);
-		return newLink;
+		return linkRepo.save(link);
 	}
 	
 	@Override
 	public Link updateLink(Link link) {
-		Link updateLink = linkRepo.save(link);
-		return updateLink;
+		return linkRepo.save(link);
 	}
 
-	public void removeLink(String linkId) {
-		linkRepo.deleteById(Integer.valueOf(linkId));
-	}
-	
-	@Override
-	public Link getLink(BusinessAccount proposer, BusinessAccount receiver) {
-		return linkRepo.findByProposerAndReceiver(proposer, receiver);
+	public void removeLink(Link linkId) {
+		linkRepo.delete(linkId);
 	}
 	
   public Store insertStore(Store store) {
@@ -284,23 +277,31 @@ public class ShhImpl implements ShhFacade {
 	}
 	
 	@Override
-	public List<Link> getLinks(String storeId) {
-		return (List<Link>) linkRepo.findAll(Sort.by(Sort.Direction.DESC, "linkid"));
+	public List<Link> getLinks(String storeId, int state, int managemnet) {
+		List<Link> list = linkRepo.findLinkByProposerIdAndStateAndManagement(storeId, state, managemnet);
+		list.addAll(linkRepo.findLinkByReceiverIdAndStateAndManagement(storeId, state, managemnet));
+		
+		return list;
 	}
 	
 	@Override
-	public List<Link> getLinksByReceiver(BusinessAccount receiver) {
-		return (List<Link>) linkRepo.findAll(Sort.by(Sort.Direction.DESC, "receiverId"));
+	public List<Link> getLinksByReceiverId(String receiverId) {
+		return (List<Link>) linkRepo.findByReceiverId(receiverId);
 	}
 	
 	@Override
-	public List<Link> getLinksByProposer(BusinessAccount proposer) {
-		return (List<Link>) linkRepo.findAll(Sort.by(Sort.Direction.DESC, "proposerId"));
+	public List<Link> getLinksByProposerId(String proposerId) {
+		return (List<Link>) linkRepo.findByProposerId(proposerId);
 	}
 	
 	@Override
-	public long countByProposer(BusinessAccount proposer) {
-		return linkRepo.countByProposer(proposer);
+	public Link getLink(String proposerId, String receiverId) {
+		return linkRepo.findByProposerIdAndReceiverId(proposerId, receiverId);
+	}
+	
+	@Override
+	public long countByProposerId(String proposerId) {
+		return linkRepo.countByProposerId(proposerId);
 	}
 
 	@Override
@@ -338,5 +339,7 @@ public class ShhImpl implements ShhFacade {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+
 
 }
