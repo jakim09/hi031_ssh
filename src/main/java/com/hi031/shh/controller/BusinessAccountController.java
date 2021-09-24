@@ -1,6 +1,9 @@
 package com.hi031.shh.controller;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,74 +20,102 @@ public class BusinessAccountController {
 	@Autowired
 	private ShhFacade shh;
 
-	// 로그인
+	@Autowired
+	private HttpSession session;
+	
+	// 濡쒓렇�씤
 	@ResponseBody
-	@RequestMapping(value="/api/v1/businessLogin", method=RequestMethod.POST)
-	public BusinessAccount businessLogin(@RequestBody String businessUserId, @RequestBody String password) throws Exception {
-		BusinessAccount userSession = shh.businessLogin(businessUserId, password);
-		// session 설정 (방법 생각..)
-		// ...
+	@RequestMapping(value="/api/v1/businessLogin/{businessUserId}/{password}", method=RequestMethod.POST)
+	public String businessLogin(@PathVariable String businessUserId, @PathVariable String password) throws Exception {
+		BusinessAccount businessAccount = shh.businessLogin(businessUserId, password);
 		
-		return userSession;
+		// session �꽕�젙 (諛⑸쾿 �깮媛�..)
+		// ...
+		if (businessAccount == null || businessAccount.getState() == 2) {
+			System.out.println("user not found");
+			throw new Exception("user not found");
+		}
+		else
+			session.setAttribute("userSession", businessAccount);
+			System.out.println((BusinessAccount)session.getAttribute("userSession"));
+		return businessAccount.getBusinessUserId();
 	}
 	
-	// 로그아웃
+	// 濡쒓렇�븘�썐
 	@ResponseBody
 	@RequestMapping(value="/api/v1/businessLogout", method=RequestMethod.GET)
-	public BusinessAccount businessLogout(@RequestBody BusinessAccount userSession) throws Exception {
-		// session 해제 (방법 생각..)
-		// ...
-		
-		return userSession;
+	public void businessLogout() throws Exception {
+		session.removeAttribute("userSession");
+		return;
 	}
 	
-	// 회원 가입
+	// �쉶�썝 媛��엯
 	@ResponseBody
 	@RequestMapping(value="/api/v1/businessSignup", method=RequestMethod.POST)
 	public BusinessAccount insertBusinessAccount(@RequestBody BusinessAccount businessAccount) throws Exception {
+		System.out.println(businessAccount.getBusinessUserId());
 		return shh.insertBusinessAccount(businessAccount);
 	}
 
-	// 아이디 찾기
+	// �븘�씠�뵒 李얘린
 	@ResponseBody
-	@RequestMapping(value="/api/v1/findingBusinessUserId", method=RequestMethod.POST)
-	public String findUserId(@RequestBody String name, @RequestBody String email) throws Exception {
+	@RequestMapping(value="/api/v1/findingBusinessUserId/{name}/{email}", method=RequestMethod.POST)
+	public String findUserId(@PathVariable String name, @PathVariable String email) throws Exception {
 		String businessUserId = shh.findBusinessUserId(name, email);
+		if (businessUserId == null)
+			throw new Exception("userId not found");
+		System.out.println(businessUserId);
 		return businessUserId;
 	}
 	
-	// 패스워드 찾기
+	// �뙣�뒪�썙�뱶 李얘린
 	@ResponseBody
-	@RequestMapping(value="/api/v1/findingBusinessPw", method=RequestMethod.GET)
-	public String findUserPw(@RequestBody String businessUserId,
-			@RequestBody String email) throws Exception {
+	@RequestMapping(value="/api/v1/findingBusinessUserPw/{businessUserId}/{email}", method=RequestMethod.POST)
+	public String findUserPw(@PathVariable String businessUserId,
+			@PathVariable String email) throws Exception {
 		BusinessAccount result = shh.findBusinessPw(businessUserId, email);
 		if (result != null) {
-			// email로 임시 pw 전송
-			// ...
+			//email
+			//...
+			System.out.println(result.getEmail());
+		} else {
+			throw new Exception("userPw not found");
 		}
 		return email;
 	}
 
-	// 회원 수정 정보 가져오기
+	// �쉶�썝 �닔�젙 �젙蹂� 媛��졇�삤湲�
 	@ResponseBody
 	@RequestMapping(path="/api/v1/businessUser/{businessUserId}", method=RequestMethod.GET)
 	public BusinessAccount getBusinessAccount(@PathVariable String businessUserId) throws Exception {
 		return shh.getBusinessAccount(businessUserId);
 	}
 	
-	// 회원 수정 submit
+	// �쉶�썝 �닔�젙 submit
 	@ResponseBody
 	@RequestMapping(value="/api/v1/businessUser", method=RequestMethod.PUT)
 	public BusinessAccount updateBusinessAccount(@RequestBody BusinessAccount businessAccount) throws Exception {
 		return shh.updateBusinessAccount(businessAccount);
 	}
 	
-	// 회원 탈퇴
+	// �쉶�썝 �깉�눜
 	@ResponseBody
-	@RequestMapping(value="/api/v1/businessUser", method=RequestMethod.DELETE)
-	public BusinessAccount removeBusinessAccount(@RequestBody BusinessAccount businessAccount) throws Exception {
-		return shh.removeBusinessAccount(businessAccount);
+	@RequestMapping(value="/api/v1/businessUser/{businessUserId}/{password}", method=RequestMethod.DELETE)
+	public BusinessAccount removeBusinessAccount(@PathVariable String businessUserId, @PathVariable String password) throws Exception {
+		BusinessAccount result = null;
+		
+		System.out.println(businessUserId);
+		System.out.println(password);
+		
+		BusinessAccount businessAccount = shh.getBusinessAccount(businessUserId);
+		if (businessAccount != null && businessAccount.getPassword().equals(password)) {
+			session.removeAttribute("userSession");
+			result = shh.removeBusinessAccount(businessAccount);
+			System.out.println(result.getBusinessUserId());
+		} else {
+			throw new Exception("remove exception");
+		}
+		return result;
 	}
 
 	
