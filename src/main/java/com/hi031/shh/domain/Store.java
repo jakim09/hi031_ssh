@@ -18,7 +18,6 @@ public class Store implements Serializable {
 	@Id
 	@SequenceGenerator(name="STOREID_SEQ_GEN", sequenceName="STOREID_SEQ", initialValue=1, allocationSize=1)
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="STOREID_SEQ_GEN")
-	
 	@Column(name="store_id")
 	private int storeId;
 	@Column(name="business_user_id")

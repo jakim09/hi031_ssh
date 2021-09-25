@@ -44,7 +44,7 @@ public class CouponController {
 	@ResponseBody
 	@RequestMapping(path="/{storeId}/{couponId}", method=RequestMethod.GET)
 	public Coupon getCoupon(@PathVariable int storeId, @PathVariable int couponId) throws Exception {
-		return shh.getCoupon(storeId);
+		return shh.getCoupon(couponId);
 	}
 	
 	@ResponseBody

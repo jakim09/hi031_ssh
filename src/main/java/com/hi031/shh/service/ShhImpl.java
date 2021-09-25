@@ -11,13 +11,14 @@ import org.springframework.stereotype.Service;
 
 import com.hi031.shh.domain.BusinessAccount;
 import com.hi031.shh.domain.ConsumerAccount;
+import com.hi031.shh.domain.ConsumerCoupon;
 import com.hi031.shh.domain.Coupon;
 import com.hi031.shh.domain.Link;
 import com.hi031.shh.repository.CouponRepository;
 import com.hi031.shh.repository.LinkRepository;
 import com.hi031.shh.repository.BusinessAccountRepository;
 import com.hi031.shh.repository.ConsumerAccountRepository;
-
+import com.hi031.shh.repository.ConsumerCouponRepository;
 import com.hi031.shh.domain.Store;
 import com.hi031.shh.mapper.StoreMapper;
 import com.hi031.shh.repository.CouponRepository;
@@ -27,10 +28,15 @@ import com.hi031.shh.repository.StoreRepository;
 public class ShhImpl implements ShhFacade {
 	@Autowired
 	private BusinessAccountRepository businessAccountRepo;
+	
 	@Autowired
 	private ConsumerAccountRepository consumerAccountRepo;
+	
 	@Autowired
 	private CouponRepository couponRepo;
+	
+	@Autowired
+	private ConsumerCouponRepository consumerCouponRepo;
 	
 	@Autowired
 	private StoreRepository storeRepo;
@@ -176,7 +182,8 @@ public class ShhImpl implements ShhFacade {
 
 	@Override
 	public void removeCoupon(Coupon coupon) {
-		couponRepo.delete(coupon);
+		coupon.setAvailable(false);
+		couponRepo.save(coupon);
 	}
 
 	@Override
@@ -190,15 +197,15 @@ public class ShhImpl implements ShhFacade {
 		}
 	}
 
-//	@Override
-	//public List<Coupon> getCoupons(int storeId) {
-		//return couponRepo.findByStoreId(storeId);
-//	}
+	@Override
+	public List<Coupon> getCoupons(int storeId) {
+		return couponRepo.findByStore_StoreId(storeId);
+	}
 
-	//@Override
-	//public long getCount(int storeId) {
-		//return couponRepo.countByStoreId(storeId);
-//	}
+	@Override
+	public long getCount(int storeId) {
+		return couponRepo.countByStore_StoreId(storeId);
+	}
 
 	@Override
 	public Link insertLink(Link link) {
@@ -305,18 +312,6 @@ public class ShhImpl implements ShhFacade {
 	}
 
 	@Override
-	public List<Coupon> getCoupons(int storeId) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public long getCount(int storeId) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
 	public List<Store> getStoresByName(int type, String keyword, int start, int end) {
 		// TODO Auto-generated method stub
 		return null;
@@ -338,6 +333,17 @@ public class ShhImpl implements ShhFacade {
 	public List<Store> getStoresByLocation(int type, String keyword, int start, int end) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public ConsumerCoupon insertConsumerCoupon(ConsumerCoupon coupon) {
+		return consumerCouponRepo.save(coupon);
+	}
+
+	@Override
+	public ConsumerCoupon updateConsumerCoupon(ConsumerCoupon coupon) {
+		coupon.setState(1);
+		return consumerCouponRepo.save(coupon);
 	}
 
 
