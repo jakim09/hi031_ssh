@@ -2,6 +2,7 @@ package com.hi031.shh.domain;
 
 import java.io.Serializable;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -25,7 +26,7 @@ public class Coupon implements Serializable {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int couponId;
 	
-	@ManyToOne
+	@ManyToOne(cascade={CascadeType.ALL})
 	@JoinColumn(name="store_id")
 	private Store store; 	//store.name, logoImage 사용해야 함
 
@@ -33,7 +34,7 @@ public class Coupon implements Serializable {
 	
 	private String description;
 	
-	private int validity;
+	private Integer validity;
 	
 	@Column(name="is_available")
 	private boolean available;
@@ -80,11 +81,11 @@ public class Coupon implements Serializable {
 		this.description = description;
 	}
 
-	public int getValidity() {
+	public Integer getValidity() {
 		return validity;
 	}
 
-	public void setValidity(int validity) {
+	public void setValidity(Integer validity) {
 		this.validity = validity;
 	}
 

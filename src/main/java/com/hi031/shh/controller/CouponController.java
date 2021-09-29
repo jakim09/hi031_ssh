@@ -51,7 +51,7 @@ public class CouponController {
 	@RequestMapping(path="/{storeId}", method=RequestMethod.GET)
 	public ResponseWrapper getCoupons(@PathVariable int storeId) throws Exception {
 		List<Coupon> results = shh.getCoupons(storeId);
-		long total = shh.getCount(storeId);
+		long total = results.size();
 		
 		responseWrapper = new ResponseWrapper(total, (List<Object>)(Object)results);
 		

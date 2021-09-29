@@ -31,7 +31,6 @@ public interface ShhFacade {
 	void removeCoupon(Coupon coupon);
 	Coupon getCoupon(int couponId);	
 	List<Coupon> getCoupons(int storeId);
-	long getCount(int storeId);
 	ConsumerCoupon insertConsumerCoupon(ConsumerCoupon coupon);
 	ConsumerCoupon updateConsumerCoupon(ConsumerCoupon coupon);
 	
