@@ -199,12 +199,7 @@ public class ShhImpl implements ShhFacade {
 
 	@Override
 	public List<Coupon> getCoupons(int storeId) {
-		return couponRepo.findByStore_StoreId(storeId);
-	}
-
-	@Override
-	public long getCount(int storeId) {
-		return couponRepo.countByStore_StoreId(storeId);
+		return couponRepo.findByStore_StoreIdAndAvailableIs(storeId, true);
 	}
 
 	@Override
