@@ -33,7 +33,56 @@ public class LinkController {
 	@ResponseBody
 	@RequestMapping(method=RequestMethod.POST)
 	public Link insertLink(@RequestBody Link link) throws Exception {
+		System.out.println(link.getProposerId() + "&" + link.getReceiverId() + "의 연게 등록");
 		return shh.insertLink(link);
+	}
+	
+	@ResponseBody
+	@RequestMapping(path="/size", method=RequestMethod.GET)
+	public ResponseWrapper getSize(@RequestParam(value = "storeid", required = true) String storeId) throws Exception {
+		List<Link> results = shh.getLinkAlarm(1, storeId);
+		
+		responseWrapper = new ResponseWrapper(results.size(), (List<Object>)(Object)results);
+		
+		return responseWrapper;
+	}
+	
+	@ResponseBody
+	@GetMapping("/alarm")
+	public ResponseWrapper getLinkAlarm(@RequestParam(value = "storeid") String storeId) throws Exception {
+		List<Link> links = shh.getLinkAlarm(1, storeId);
+
+		responseWrapper = new ResponseWrapper(links.size(), (List<Object>)(Object)links);
+		
+		return responseWrapper;
+	}
+	
+	@ResponseBody
+	@PutMapping("/alarm/watched")
+	public ResponseWrapper updateLinkAlarm(@RequestParam(value = "storeid") String storeId) throws Exception {
+		List<Link> links = shh.getLinkAlarm(1, storeId);
+		for(Link link : links) {
+			link.setIsWatched(-1);
+			shh.insertLink(link);
+		}
+
+		responseWrapper = new ResponseWrapper(links.size(), (List<Object>)(Object)links);
+		
+		return responseWrapper;
+	}
+	
+	@ResponseBody
+	@PutMapping("/alarm/return")
+	public ResponseWrapper updateLinkAlarmReturn(@RequestParam(value = "storeid") String storeId) throws Exception {
+		List<Link> links = shh.getLinkAlarm(-1, storeId);
+		for(Link link : links) {
+			link.setIsWatched(1);
+			shh.insertLink(link);
+		}
+
+		responseWrapper = new ResponseWrapper(links.size(), (List<Object>)(Object)links);
+		
+		return responseWrapper;
 	}
 	
 	//GET 본인 상점과 현재 연계된 다른 상점들 리스트
@@ -41,9 +90,7 @@ public class LinkController {
 	@GetMapping
 	public ResponseWrapper getMyLinkList(@RequestParam(value = "store", required = true) String storeId) throws Exception {
 		List<Link> results = shh.getLinks(storeId, 1, 1); //승인완료 상태, 연결 중 상태
-		System.out.println("start");
-		System.out.println(results.toString());
-		System.out.println(results.get(0).getReceiver().getName());
+
 		responseWrapper = new ResponseWrapper(results.size(), (List<Object>)(Object)results);
 		
 		return responseWrapper;
@@ -51,10 +98,12 @@ public class LinkController {
 	
 	//완성
 	@ResponseBody
-	@PutMapping("/state")  
-	public Link updateLink(@RequestParam int state,  
-            @RequestBody Link link) throws Exception {
+	@PutMapping
+	public Link updateLink(@RequestParam(value = "linkid") String linkId, @RequestParam(value = "state") int state,
+			@RequestParam(value = "management") int management) throws Exception {
+		Link link = shh.getLinkByLinkId(linkId);
 		link.setState(state);
+		link.setManagement(management);
 		
 		return shh.insertLink(link);
 	}

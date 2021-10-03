@@ -35,14 +35,15 @@ public interface ShhFacade {
 	ConsumerCoupon updateConsumerCoupon(ConsumerCoupon coupon);
 	
 	Link insertLink(Link link);
-	Link updateLink(Link link);
+	Link updateLink(Link link, int state, int management);
 	Link getLink(String proposerId, String receiverId);
+	Link getLinkByLinkId(String linkId);
 	List<Link> getLinks(String storeId, int state, int managemnet);
 	long countByProposerId(String proposerId);
 	List<Link> getLinksByReceiverId(String receiverId);
 	List<Link> getLinksByProposerId(String proposerId);
 	void removeLink(Link link);
-	
+	List<Link> getLinkAlarm(int isWatched, String storeId);
 	Store insertStore(Store store);
 	Store updateStore(Store store);
 	void removeStore(Store store);
