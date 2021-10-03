@@ -213,7 +213,10 @@ public class ShhImpl implements ShhFacade {
 	}
 	
 	@Override
-	public Link updateLink(Link link) {
+	public Link updateLink(Link link, int state, int management) {
+		link.setState(state);
+		link.setManagement(management);
+		
 		return linkRepo.save(link);
 	}
 
@@ -307,6 +310,11 @@ public class ShhImpl implements ShhFacade {
 	}
 	
 	@Override
+	public Link getLinkByLinkId(String linkId) {
+		return linkRepo.findByLinkId(linkId);
+	}
+	
+	@Override
 	public long countByProposerId(String proposerId) {
 		return linkRepo.countByProposerId(proposerId);
 	}
@@ -346,6 +354,9 @@ public class ShhImpl implements ShhFacade {
 		return consumerCouponRepo.save(coupon);
 	}
 
-
-
+	@Override
+	public List<Link> getLinkAlarm(int isWatched, String storeId) {
+		List<Link> list = linkRepo.findTop7ByIsWatchedAndReceiverIdOrderByProposalDateDesc(isWatched, storeId);
+		return list;
+	}
 }
