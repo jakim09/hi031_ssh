@@ -354,4 +354,11 @@ public class ShhImpl implements ShhFacade {
 		List<Link> list = linkRepo.findTop7ByIsWatchedAndReceiverIdOrderByProposalDateDesc(isWatched, storeId);
 		return list;
 	}
+
+	@Override
+	public Boolean isInConsumerCoupon(String storeName, String businessNum, String consumerUserId, String receiptDate) {
+		int storeId = storeRepo.findByBusinessNumAndStoreName(businessNum, storeName);
+		
+		return consumerCouponRepo.existsByStoreIdAndConsumerUserIdAndReceiptDate(storeId, consumerUserId, receiptDate);
+	}
 }

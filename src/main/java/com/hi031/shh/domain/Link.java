@@ -28,7 +28,7 @@ public class Link implements Serializable{
 	@Id
 	@Column(name="link_id")
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private @NonNull String linkId;
+	private String linkId;
 	
 	@Column(name="proposer_id")
 	private @NonNull String proposerId;
@@ -39,13 +39,13 @@ public class Link implements Serializable{
 	private String content;
 
 	@Column(name="is_watched")
-	private @NonNull int isWatched;
+	private  int isWatched;
 
-	private @NonNull int state;
-	private @NonNull int management;
+	private  int state;
+	private  int management;
 
 	@Column(name="proposal_date")
-	private @NonNull String proposalDate;
+	private String proposalDate;
 
 	@OneToOne
     @JoinColumn(name="receiver_id", insertable = false, updatable = false)
