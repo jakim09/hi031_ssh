@@ -56,5 +56,5 @@ public interface ShhFacade {
 	List<Store> getStoresByLocation(int type, String keyword, int start, int end);
 	long getMyStoreCount(String businessUserId);
 	
-
+	Boolean isInConsumerCoupon(String storeName, String businessNum, String consumerUserId, String reiceptDate);
 }

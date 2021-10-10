@@ -18,7 +18,7 @@ import lombok.Setter;
 
 @SuppressWarnings("serial")
 @Entity
-@Table(name="consumercoupon")
+@Table(name="consumer_coupon")
 @Getter
 @Setter
 public class ConsumerCoupon implements Serializable{
@@ -29,8 +29,12 @@ public class ConsumerCoupon implements Serializable{
 	private int consumerCouponId;
 	
 	@ManyToOne
-	@JoinColumn(name="consumer_user_id")
+	@JoinColumn(name="consumer_user_id", insertable = false, updatable = false)
 	private ConsumerAccount consumer;
+	
+	@Column(name="consumer_user_id")
+	private String consumerUserId;
+	
 	
 	@ManyToOne
 	@JoinColumn(name="coupon_id")
@@ -40,19 +44,80 @@ public class ConsumerCoupon implements Serializable{
 	@DateTimeFormat(pattern = "yyyy-MM-dd hh:mm:ss")
 	private String downloadDate;
 	
-	private int state; //0:사용 가능, 1:사용완료, -1:기한 만료
-
-//	public int getState() {
-//		if ()
+	private int state; //0:�궗�슜 媛��뒫, 1:�궗�슜�셿猷�, -1:湲고븳 留뚮즺
+	
+	@Column(name="store_id")
+	private int storeId;
+	
+	@Column(name="receipt_date")
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	private String receiptDate;
+	
 //		return -1;
 //	}
 	
+	public int getConsumerCouponId() {
+		return consumerCouponId;
+	}
+
+	public void setConsumerCouponId(int consumerCouponId) {
+		this.consumerCouponId = consumerCouponId;
+	}
+
+	public ConsumerAccount getConsumer() {
+		return consumer;
+	}
+
+	public void setConsumer(ConsumerAccount consumer) {
+		this.consumer = consumer;
+	}
+
+	public Coupon getCoupon() {
+		return coupon;
+	}
+
+	public void setCoupon(Coupon coupon) {
+		this.coupon = coupon;
+	}
+
+	public String getDownloadDate() {
+		return downloadDate;
+	}
+
+	public void setDownloadDate(String downloadDate) {
+		this.downloadDate = downloadDate;
+	}
+
+	public String getReceiptDate() {
+		return receiptDate;
+	}
+
+	public void setReceiptDate(String receiptDate) {
+		this.receiptDate = receiptDate;
+	}
+
 	public int getState() {
 		return state;
 	}
 
 	public void setState(int state) {
 		this.state = state;
+	}
+
+	public String getConsumerUserId() {
+		return consumerUserId;
+	}
+
+	public void setConsumerUserId(String consumerUserId) {
+		this.consumerUserId = consumerUserId;
+	}
+
+	public int getStoreId() {
+		return storeId;
+	}
+
+	public void setStoreId(int storeId) {
+		this.storeId = storeId;
 	}
 	
 }

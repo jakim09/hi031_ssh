@@ -6,6 +6,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
@@ -18,8 +20,14 @@ public class Store implements Serializable {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="store_id")
 	private int storeId;
+	
+	@ManyToOne
+	@JoinColumn(name="business_user_id", insertable = false, updatable = false)
+	private BusinessAccount businessUser;
+	
 	@Column(name="business_user_id")
 	private String businessUserId;
+	
 	@Column(name="main_category_id")
 	private int mainCategoryId;
 	@Column(name="sub_category_id")

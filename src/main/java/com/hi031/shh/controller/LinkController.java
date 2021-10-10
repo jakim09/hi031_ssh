@@ -1,5 +1,7 @@
 package com.hi031.shh.controller;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +35,10 @@ public class LinkController {
 	@ResponseBody
 	@RequestMapping(method=RequestMethod.POST)
 	public Link insertLink(@RequestBody Link link) throws Exception {
-		System.out.println(link.getProposerId() + "&" + link.getReceiverId() + "의 연게 등록");
+		Date today = new Date();		        
+		SimpleDateFormat date = new SimpleDateFormat("yyyy/MM/dd");
+			
+		link.setProposalDate(date.format(today));
 		return shh.insertLink(link);
 	}
 	
@@ -85,18 +90,18 @@ public class LinkController {
 		return responseWrapper;
 	}
 	
-	//GET 본인 상점과 현재 연계된 다른 상점들 리스트
+	//GET 蹂몄씤 �긽�젏怨� �쁽�옱 �뿰怨꾨맂 �떎瑜� �긽�젏�뱾 由ъ뒪�듃
 	@ResponseBody
 	@GetMapping
 	public ResponseWrapper getMyLinkList(@RequestParam(value = "store", required = true) String storeId) throws Exception {
-		List<Link> results = shh.getLinks(storeId, 1, 1); //승인완료 상태, 연결 중 상태
+		List<Link> results = shh.getLinks(storeId, 1, 1); //�듅�씤�셿猷� �긽�깭, �뿰寃� 以� �긽�깭
 
 		responseWrapper = new ResponseWrapper(results.size(), (List<Object>)(Object)results);
 		
 		return responseWrapper;
 	}
 	
-	//완성
+	//�셿�꽦
 	@ResponseBody
 	@PutMapping
 	public Link updateLink(@RequestParam(value = "linkid") String linkId, @RequestParam(value = "state") int state,
@@ -108,7 +113,7 @@ public class LinkController {
 		return shh.insertLink(link);
 	}
 	
-	//완료
+	//�셿猷�
 	@ResponseBody
 	@RequestMapping(path="/incoming/{storeId}", method=RequestMethod.GET)
 	public ResponseWrapper getIncomingLink(@PathVariable String storeId) throws Exception {
@@ -119,7 +124,7 @@ public class LinkController {
 		return responseWrapper;
 	}
 	
-	//완료
+	//�셿猷�
 	@ResponseBody
 	@RequestMapping(path="/outcoming/{storeId}", method=RequestMethod.GET)
 	public ResponseWrapper getOutcomingLink(@PathVariable String storeId) throws Exception {
@@ -130,14 +135,14 @@ public class LinkController {
 		return responseWrapper;
 	}
 	
-	//완성
+	//�셿�꽦
 	@ResponseBody
 	@RequestMapping(path="/detail/{proposerId}/{receiverId}", method=RequestMethod.GET)
 	public Link getLink(@PathVariable String proposerId, @PathVariable String receiverId) throws Exception {
 		return shh.getLink(proposerId, receiverId);
 	}
 	
-	//완성
+	//�셿�꽦
 	@ResponseBody
 	@DeleteMapping()  
 	  public void deleteLink(@RequestBody Link link) {  
