@@ -65,7 +65,7 @@ public class ConsumerCoupon implements Serializable{
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
 	private LocalDateTime useDate;
-	
+
 	private int state; //1:사용 가능, 0:사용완료, -1:기한 만료
 	
 	@Transient
@@ -76,7 +76,6 @@ public class ConsumerCoupon implements Serializable{
 		super();
 	}
 	
-
 	public int getConsumerCouponId() {
 		return consumerCouponId;
 	}

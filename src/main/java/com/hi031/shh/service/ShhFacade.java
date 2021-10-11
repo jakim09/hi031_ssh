@@ -37,14 +37,15 @@ public interface ShhFacade {
 	ConsumerCoupon getConsumerCoupon(int consumerCouponId);
 	
 	Link insertLink(Link link);
-	Link updateLink(Link link);
+	Link updateLink(Link link, int state, int management);
 	Link getLink(String proposerId, String receiverId);
+	Link getLinkByLinkId(String linkId);
 	List<Link> getLinks(String storeId, int state, int managemnet);
 	long countByProposerId(String proposerId);
 	List<Link> getLinksByReceiverId(String receiverId);
 	List<Link> getLinksByProposerId(String proposerId);
 	void removeLink(Link link);
-	
+	List<Link> getLinkAlarm(int isWatched, String storeId);
 	Store insertStore(Store store);
 	Store updateStore(Store store);
 	void removeStore(Store store);
@@ -57,5 +58,5 @@ public interface ShhFacade {
 	List<Store> getStoresByLocation(int type, String keyword, int start, int end);
 	long getMyStoreCount(String businessUserId);
 	
-
+	Boolean isInConsumerCoupon(String storeName, String businessNum, String consumerUserId, String reiceptDate);
 }

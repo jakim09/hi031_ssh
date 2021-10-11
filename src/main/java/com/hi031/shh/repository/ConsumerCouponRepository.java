@@ -9,13 +9,13 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 import com.hi031.shh.domain.ConsumerCoupon;
 
 public interface ConsumerCouponRepository extends PagingAndSortingRepository<ConsumerCoupon, Integer>{
-	List<ConsumerCoupon> findByConsumer_ConsumerUserIdAndStateOrderByDownloadDate(int consumerUserId, int state) throws DataAccessException; //발급순 정렬
+	List<ConsumerCoupon> findByConsumer_ConsumerUserIdAndStateOrderByDownloadDate(int consumerUserId, int state) throws DataAccessException; //諛쒓툒�닚 �젙�젹
 	
 //	@Query("select c from ConsumerCoupon c " + 
 //			"where c.consumer.consumerUserId = ?1 order by c.finishDate desc")
-//	List<ConsumerCoupon> findByConsumerUserIdOrderByCoupon_FinishDate(int consumerUserId) throws DataAccessException; //마감임박순 정렬
+//	List<ConsumerCoupon> findByConsumerUserIdOrderByCoupon_FinishDate(int consumerUserId) throws DataAccessException; //留덇컧�엫諛뺤닚 �젙�젹
 
-	List<ConsumerCoupon> findByConsumer_ConsumerUserIdAndStateNot(int consumerUserId, int state) throws DataAccessException; //만료 쿠폰
+	List<ConsumerCoupon> findByConsumer_ConsumerUserIdAndStateNot(int consumerUserId, int state) throws DataAccessException; //留뚮즺 荑좏룿
 	
 	@Query(value =
 	        "SELECT "+
@@ -28,4 +28,6 @@ public interface ConsumerCouponRepository extends PagingAndSortingRepository<Con
 	        , nativeQuery = true
 	    )
 	List<ConsumerCoupon> GroupByConsumer_ConsumerUserIdAndStateIs(int consumerUserId, int state) throws DataAccessException; //날짜별 쿠폰 사용내역
+
+	boolean existsByStoreIdAndConsumerUserIdAndReceiptDate(int storeId, String consumerUserId, String receiptDate) throws DataAccessException;
 }
