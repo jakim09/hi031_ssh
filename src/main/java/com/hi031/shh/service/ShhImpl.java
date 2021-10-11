@@ -1,7 +1,10 @@
 package com.hi031.shh.service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+
+import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -170,6 +173,7 @@ public class ShhImpl implements ShhFacade {
 	
 	@Override
 	public Coupon insertCoupon(Coupon coupon) {
+		coupon.setFinishDateForDb(coupon.getFinishDate().atStartOfDay().plusHours(23).plusMinutes(59).plusSeconds(59));
 		Coupon newCoupon = couponRepo.save(coupon);
 		return newCoupon;
 	}
@@ -344,12 +348,24 @@ public class ShhImpl implements ShhFacade {
 	}
 
 	@Override
+	@Transactional
 	public ConsumerCoupon updateConsumerCoupon(ConsumerCoupon coupon) {
-		coupon.setState(1);
+		coupon.setState(0);
+		coupon.setUseDate(LocalDateTime.now());
 		return consumerCouponRepo.save(coupon);
 	}
 
 	@Override
+	public ConsumerCoupon getConsumerCoupon(int consumerCouponId) {
+		Optional<ConsumerCoupon> result = consumerCouponRepo.findById(consumerCouponId);
+		
+		if (result.isPresent()) {
+			return result.get();
+		} else {
+			return null;
+		}
+	}
+
 	public List<Link> getLinkAlarm(int isWatched, String storeId) {
 		List<Link> list = linkRepo.findTop7ByIsWatchedAndReceiverIdOrderByProposalDateDesc(isWatched, storeId);
 		return list;

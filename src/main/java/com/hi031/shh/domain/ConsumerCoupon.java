@@ -1,17 +1,23 @@
 package com.hi031.shh.domain;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.springframework.format.annotation.DateTimeFormat;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -22,39 +28,53 @@ import lombok.Setter;
 @Getter
 @Setter
 public class ConsumerCoupon implements Serializable{
-	
 	@Id
 	@Column(name="consumer_coupon_id")
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int consumerCouponId;
 	
-	@ManyToOne
+	@ManyToOne(cascade = {}, targetEntity = ConsumerAccount.class, fetch = FetchType.LAZY)
 	@JoinColumn(name="consumer_user_id", insertable = false, updatable = false)
+	@JsonIgnore
 	private ConsumerAccount consumer;
 	
 	@Column(name="consumer_user_id")
 	private String consumerUserId;
 	
-	
-	@ManyToOne
-	@JoinColumn(name="coupon_id")
+	@ManyToOne(cascade = {})
+	@JoinColumn(name="coupon_id", insertable = false, updatable = false)
 	private Coupon coupon;
 	
+	@Column(name="coupon_id")
+	private int couponId;
+	
+	@Column(name="receipt_id")
+	private int receiptId;
+	
 	@Column(name="download_date")
-	@DateTimeFormat(pattern = "yyyy-MM-dd hh:mm:ss")
-	private String downloadDate;
+	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
+	private LocalDateTime downloadDate;
 	
-	private int state; //0:�궗�슜 媛��뒫, 1:�궗�슜�셿猷�, -1:湲고븳 留뚮즺
+	@Column(name="finish_date")
+	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
+	private LocalDateTime finishDate;
 	
-	@Column(name="store_id")
-	private int storeId;
+	@Column(name="use_date")
+	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
+	private LocalDateTime useDate;
+
+	private int state; //1:사용 가능, 0:사용완료, -1:기한 만료
 	
-	@Column(name="receipt_date")
-	@DateTimeFormat(pattern = "yyyy-MM-dd")
-	private String receiptDate;
+	@Transient
+	private int remainingDay;
+
 	
-//		return -1;
-//	}
+	public ConsumerCoupon() {
+		super();
+	}
 	
 	public int getConsumerCouponId() {
 		return consumerCouponId;
@@ -72,6 +92,14 @@ public class ConsumerCoupon implements Serializable{
 		this.consumer = consumer;
 	}
 
+	public String getConsumerUserId() {
+		return consumerUserId;
+	}
+
+	public void setConsumerUserId(String consumerUserId) {
+		this.consumerUserId = consumerUserId;
+	}
+
 	public Coupon getCoupon() {
 		return coupon;
 	}
@@ -80,20 +108,36 @@ public class ConsumerCoupon implements Serializable{
 		this.coupon = coupon;
 	}
 
-	public String getDownloadDate() {
+	public int getCouponId() {
+		return couponId;
+	}
+
+	public void setCouponId(int couponId) {
+		this.couponId = couponId;
+	}
+
+	public LocalDateTime getDownloadDate() {
 		return downloadDate;
 	}
 
-	public void setDownloadDate(String downloadDate) {
+	public void setDownloadDate(LocalDateTime downloadDate) {
 		this.downloadDate = downloadDate;
 	}
 
-	public String getReceiptDate() {
-		return receiptDate;
+	public LocalDateTime getFinishDate() {
+		return finishDate;
 	}
 
-	public void setReceiptDate(String receiptDate) {
-		this.receiptDate = receiptDate;
+	public void setFinishDate(LocalDateTime finishDate) {
+		this.finishDate = finishDate;
+	}
+
+	public LocalDateTime getUseDate() {
+		return useDate;
+	}
+
+	public void setUseDate(LocalDateTime useDate) {
+		this.useDate = useDate;
 	}
 
 	public int getState() {
@@ -104,20 +148,21 @@ public class ConsumerCoupon implements Serializable{
 		this.state = state;
 	}
 
-	public String getConsumerUserId() {
-		return consumerUserId;
+	public int getReceiptId() {
+		return receiptId;
 	}
 
-	public void setConsumerUserId(String consumerUserId) {
-		this.consumerUserId = consumerUserId;
+	public void setReceiptId(int receiptId) {
+		this.receiptId = receiptId;
 	}
 
-	public int getStoreId() {
-		return storeId;
+	public int getRemainingDay() {
+		return remainingDay;
 	}
 
-	public void setStoreId(int storeId) {
-		this.storeId = storeId;
+	public void setRemainingDay(int remainingDay) {
+		this.remainingDay = remainingDay;
 	}
+	
 	
 }

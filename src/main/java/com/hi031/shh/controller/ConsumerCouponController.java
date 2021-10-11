@@ -1,7 +1,5 @@
 package com.hi031.shh.controller;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,9 +11,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.hi031.shh.domain.ConsumerCoupon;
-import com.hi031.shh.domain.Coupon;
-import com.hi031.shh.domain.Link;
-import com.hi031.shh.domain.ResponseWrapper;
 import com.hi031.shh.service.ShhFacade;
 
 @RestController
@@ -25,11 +20,11 @@ public class ConsumerCouponController {
 	@Autowired
 	private ShhFacade shh;
 	
-	private ResponseWrapper responseWrapper;
+//	private ResponseWrapper responseWrapper;
 	
 	@ResponseBody
 	@GetMapping
-	public boolean isInMyCoupon( // ¥Á¿œø° «ÿ¥Á ∞°∞‘ ƒÌ∆˘¿ª ∏∏µÁ ¿˚¿Ã ¿÷¿∏∏È true, æ¯¿∏∏È false
+	public boolean isInMyCoupon( // ÎãπÏùºÏóê Ìï¥Îãπ Í∞ÄÍ≤å Ïø†Ìè∞ÏùÑ ÎßåÎì† Ï†ÅÏù¥ ÏûàÏúºÎ©¥ true, ÏóÜÏúºÎ©¥ false
 			@RequestParam(value = "storename", required = true) String storeName, 
 			@RequestParam(value = "businessnum", required = true) String businessNum,
 			@RequestParam(value = "date", required = true) String date,
@@ -40,22 +35,22 @@ public class ConsumerCouponController {
 	
 	@ResponseBody
 	@RequestMapping(method=RequestMethod.POST)
-	public ConsumerCoupon insertCoupon(@RequestBody ConsumerCoupon coupon) throws Exception {
+	public ConsumerCoupon insertConsumerCoupon(@RequestBody ConsumerCoupon coupon) throws Exception {
 		return shh.insertConsumerCoupon(coupon);
 	}
 	
 	@ResponseBody
 	@RequestMapping(method=RequestMethod.PUT)
-	public ConsumerCoupon updateCoupon(@RequestBody ConsumerCoupon coupon) throws Exception {
+	public ConsumerCoupon updateConsumerCoupon(@RequestBody ConsumerCoupon coupon) throws Exception {
 		return shh.updateConsumerCoupon(coupon);
 	}
 
 	
-//	@ResponseBody
-//	@RequestMapping(path="/{storeId}/{couponId}", method=RequestMethod.GET)
-//	public Coupon getCoupon(@PathVariable int storeId, @PathVariable int couponId) throws Exception {
-//		return shh.getCoupon(couponId);
-//	}
+	@ResponseBody
+	@RequestMapping(path="/{consumerCouponId}", method=RequestMethod.GET)
+	public ConsumerCoupon getConsumerCoupon(@PathVariable int consumerCouponId) throws Exception {
+		return shh.getConsumerCoupon(consumerCouponId);
+	}
 	
 //	@ResponseBody
 //	@RequestMapping(path="/{storeId}", method=RequestMethod.GET)
