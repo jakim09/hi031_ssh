@@ -7,7 +7,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
 import com.hi031.shh.domain.ConsumerCoupon;
-import com.hi031.shh.domain.Coupon;
 
 public interface ConsumerCouponRepository extends PagingAndSortingRepository<ConsumerCoupon, Integer>{
 	List<ConsumerCoupon> findByConsumer_ConsumerUserIdAndStateOrderByDownloadDate(int consumerUserId, int state) throws DataAccessException; //발급순 정렬
@@ -18,4 +17,15 @@ public interface ConsumerCouponRepository extends PagingAndSortingRepository<Con
 
 	List<ConsumerCoupon> findByConsumer_ConsumerUserIdAndStateNot(int consumerUserId, int state) throws DataAccessException; //만료 쿠폰
 	
+	@Query(value =
+	        "SELECT "+
+	            " c. AS year " +
+	            ", SUM(rp.loan_small) AS smallSum " +
+	            ", SUM(rp.loan_major) AS majorSum " +
+	            ", SUM(rp.loan_total) AS totalSum " +
+	            "FROM consumer_coupon c " +
+	            "GROUP BY rp.year"
+	        , nativeQuery = true
+	    )
+	List<ConsumerCoupon> GroupByConsumer_ConsumerUserIdAndStateIs(int consumerUserId, int state) throws DataAccessException; //날짜별 쿠폰 사용내역
 }

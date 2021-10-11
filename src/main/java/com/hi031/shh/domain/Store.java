@@ -18,27 +18,38 @@ public class Store implements Serializable {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="store_id")
 	private int storeId;
+	
 	@Column(name="business_user_id")
 	private String businessUserId;
+	
 	@Column(name="main_category_id")
 	private int mainCategoryId;
+	
 	@Column(name="sub_category_id")
 	private int subCategoryId;
+	
 	private String name;
 	private String address1;
 	private String address2;
 	private String telephone;
+	
 	@Column(name="store_image1")
 	private String storeImage1;
+	
 	@Column(name="storeImage2")
 	private String store_image2;
+	
 	@Column(name="storeImage3")
 	private String store_image3;
+	
 	@Column(name="logoImage")
 	private String logo_image;
+	
 	private String introduce;
+	
 	@Column(name="short_introduce")
 	private String shortIntroduce;
+	
 	public int getStoreId() {
 		return storeId;
 	}

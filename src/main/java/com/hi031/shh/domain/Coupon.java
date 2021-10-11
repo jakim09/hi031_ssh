@@ -1,8 +1,9 @@
 package com.hi031.shh.domain;
 
 import java.io.Serializable;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -11,6 +12,12 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
+
+import org.springframework.format.annotation.DateTimeFormat;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -26,9 +33,15 @@ public class Coupon implements Serializable {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int couponId;
 	
-	@ManyToOne(cascade={CascadeType.ALL})
-	@JoinColumn(name="store_id")
+//	@ManyToOne(cascade = {}, targetEntity = Store.class, fetch = FetchType.LAZY)
+//	@JoinColumn(name="store_id", insertable = false, updatable = false)
+//	@JsonIgnore
+	@ManyToOne(cascade = {})
+	@JoinColumn(name="store_id", insertable = false, updatable = false)
 	private Store store; 	//store.name, logoImage 사용해야 함
+	
+	@Column(name = "store_id")
+	private int storeId;
 
 	private String name;
 	
@@ -40,10 +53,17 @@ public class Coupon implements Serializable {
 	private boolean available;
 	
 	@Column(name="start_date")
-	private String startDate;
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone="Asia/Seoul")
+	private LocalDate startDate;
+	
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone="Asia/Seoul")
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	@Transient
+	private LocalDate finishDate;
 	
 	@Column(name="finish_date")
-	private String finishDate;
+	@JsonIgnore
+	private LocalDateTime finishDateForDb;
 	
 	public Coupon() {
 		super();
@@ -63,6 +83,14 @@ public class Coupon implements Serializable {
 
 	public void setStore(Store store) {
 		this.store = store;
+	}
+
+	public int getStoreId() {
+		return storeId;
+	}
+
+	public void setStoreId(int storeId) {
+		this.storeId = storeId;
 	}
 
 	public String getName() {
@@ -97,23 +125,33 @@ public class Coupon implements Serializable {
 		this.available = available;
 	}
 
-	public String getStartDate() {
+	public LocalDate getStartDate() {
 		return startDate;
 	}
 
-	public void setStartDate(String startDate) {
+	public void setStartDate(LocalDate startDate) {
 		this.startDate = startDate;
 	}
 
-	public String getFinishDate() {
-		return finishDate;
+	public LocalDate getFinishDate() {
+		if (finishDateForDb == null) {
+			return this.finishDate;
+		} else {
+			return finishDateForDb.toLocalDate();
+		}
 	}
 
-	public void setFinishDate(String finishDate) {
+	public void setFinishDate(LocalDate finishDate) {
 		this.finishDate = finishDate;
 	}
+
+	public LocalDateTime getFinishDateForDb() {
+		return finishDateForDb;
+	}
 	
-	
-	
+	public void setFinishDateForDb(LocalDateTime finishDateForDb) {
+		this.finishDateForDb = finishDateForDb;
+	}
+
 	
 }
