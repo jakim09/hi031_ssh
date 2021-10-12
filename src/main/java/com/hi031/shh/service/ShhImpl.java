@@ -488,6 +488,7 @@ public class ShhImpl implements ShhFacade {
 	public Boolean isInConsumerCoupon(String storeName, String businessNum, String consumerUserId, String receiptDate) {
 		int storeId = storeRepo.findByBusinessNumAndStoreName(businessNum, storeName);
 		
-		return consumerCouponRepo.existsByStoreIdAndConsumerUserIdAndReceiptDate(storeId, consumerUserId, receiptDate);
+		return null;
+//		return consumerCouponRepo.existsByStoreIdAndConsumerUserIdAndReceiptDate(storeId, consumerUserId, receiptDate);
 	}
 }
