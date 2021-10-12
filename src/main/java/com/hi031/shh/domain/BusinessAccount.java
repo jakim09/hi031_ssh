@@ -23,7 +23,7 @@ public class BusinessAccount implements Serializable {
 	private String name;
 	private String email;
 	@Column(name="business_num")
-	private int businessNum;
+	private String businessNum;
 	@OneToMany
 	@JoinColumn(name="business_user_id")
 	private List<Store> stores;
@@ -32,7 +32,7 @@ public class BusinessAccount implements Serializable {
 	
 	public BusinessAccount() {}
 	
-	public BusinessAccount(String businessUserId, String password, String name, String email, int businessNum,
+	public BusinessAccount(String businessUserId, String password, String name, String email, String businessNum,
 			List<Store> stores) {
 		super();
 		this.businessUserId = businessUserId;
@@ -77,11 +77,11 @@ public class BusinessAccount implements Serializable {
 		this.email = email;
 	}
 
-	public int getBusinessNum() {
+	public String getBusinessNum() {
 		return businessNum;
 	}
 
-	public void setBusinessNum(int businessNum) {
+	public void setBusinessNum(String businessNum) {
 		this.businessNum = businessNum;
 	}
 

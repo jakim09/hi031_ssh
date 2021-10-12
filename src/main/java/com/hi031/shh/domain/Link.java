@@ -5,11 +5,15 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.Table;
 
 import lombok.*;
 
@@ -19,10 +23,12 @@ import lombok.*;
 @Setter
 @ToString
 @Builder
+@Table(name = "Link")
 public class Link implements Serializable{
 	@Id
 	@Column(name="link_id")
-	private @NonNull String linkId;
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	private String linkId;
 	
 	@Column(name="proposer_id")
 	private @NonNull String proposerId;
@@ -30,11 +36,16 @@ public class Link implements Serializable{
 	@Column(name="receiver_id")
 	private @NonNull String receiverId;
 
-	private @NonNull int state;
-	private @NonNull int management;
+	private String content;
+
+	@Column(name="is_watched")
+	private  int isWatched;
+
+	private  int state;
+	private  int management;
 
 	@Column(name="proposal_date")
-	private @NonNull String proposalDate;
+	private String proposalDate;
 
 	@OneToOne
     @JoinColumn(name="receiver_id", insertable = false, updatable = false)
@@ -100,14 +111,28 @@ public class Link implements Serializable{
 		this.receiverId = receiverId;
 	}
 
-
-
 	public String getProposalDate() {
 		return proposalDate;
 	}
 
 	public void setProposalDate(String proposalDate) {
 		this.proposalDate = proposalDate;
+	}
+
+	public String getContent() {
+		return content;
+	}
+
+	public void setContent(String content) {
+		this.content = content;
+	}
+	
+	public int getIsWatched() {
+		return isWatched;
+	}
+
+	public void setIsWatched(int isWatched) {
+		this.isWatched = isWatched;
 	}
 
 }

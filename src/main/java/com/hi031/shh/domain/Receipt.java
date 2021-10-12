@@ -22,10 +22,10 @@ import lombok.Setter;
 @SuppressWarnings("serial")
 @Entity
 @Table(name="receipt", uniqueConstraints={
-      @UniqueConstraint(
-            columnNames={"consumer_user_id", "store_id", "receipt_date"}
-         )
-      })
+		@UniqueConstraint(
+				columnNames={"consumer_user_id", "store_id", "receipt_date"}
+			)
+		})
 @Getter
 @Setter
 public class Receipt implements Serializable {
@@ -41,10 +41,10 @@ public class Receipt implements Serializable {
    @ManyToOne
    @JoinColumn(name="store_id", insertable = false, updatable = false)
    private Store store;
-   
+
    @Column(name="store_id")
    private int storeId;
-   
+
    @ManyToOne
    @JoinColumn(name="consumer_user_id", insertable = false, updatable = false)
    private ConsumerAccount consumerAccount;
@@ -110,5 +110,4 @@ public class Receipt implements Serializable {
 		this.consumerUserId = consumerUserId;
 	}
    
-  
 }

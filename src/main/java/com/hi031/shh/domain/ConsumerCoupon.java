@@ -1,6 +1,7 @@
 package com.hi031.shh.domain;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -11,9 +12,11 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.Getter;
@@ -25,139 +28,141 @@ import lombok.Setter;
 @Getter
 @Setter
 public class ConsumerCoupon implements Serializable{
-   
-   @Id
-   @Column(name="consumer_coupon_id")
-   @GeneratedValue(strategy=GenerationType.IDENTITY)
-   private int consumerCouponId;
-   
-   @ManyToOne(cascade = {})
-   @JoinColumn(name="consumer_user_id", insertable = false, updatable = false)
-   private ConsumerAccount consumer;
-   
-   @Column(name="consumer_user_id")
-   private String consumerUserId;
-   
-   @ManyToOne(cascade = {}, targetEntity = Coupon.class, fetch = FetchType.LAZY)
-   @JoinColumn(name="coupon_id", insertable = false, updatable = false)
-   @JsonIgnore
-   private Coupon coupon;
-   
-   @Column(name="receipt_id")
-   private int receiptId;
-   
-   @Column(name="coupon_id")
-   private int couponId;
-   
-   @Column(name="download_date")
-   @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-   private String downloadDate;
-   
-   @Column(name="finish_date")
-   @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-   private String finishDate;
-   
-   @Column(name="use_date")
-   @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-   private String useDate;
-   
-   private int state; //1:사용 가능, 0:사용완료, -1:기한 만료
+	@Id
+	@Column(name="consumer_coupon_id")
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	private int consumerCouponId;
+	
+	@ManyToOne(cascade = {}, targetEntity = ConsumerAccount.class, fetch = FetchType.LAZY)
+	@JoinColumn(name="consumer_user_id", insertable = false, updatable = false)
+	@JsonIgnore
+	private ConsumerAccount consumer;
+	
+	@Column(name="consumer_user_id")
+	private String consumerUserId;
+	
+	@ManyToOne(cascade = {})
+	@JoinColumn(name="coupon_id", insertable = false, updatable = false)
+	private Coupon coupon;
+	
+	@Column(name="coupon_id")
+	private int couponId;
+	
+	@Column(name="receipt_id")
+	private int receiptId;
+	
+	@Column(name="download_date")
+	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
+	private LocalDateTime downloadDate;
+	
+	@Column(name="finish_date")
+	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
+	private LocalDateTime finishDate;
+	
+	@Column(name="use_date")
+	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
+	private LocalDateTime useDate;
 
+	private int state; //1:사용 가능, 0:사용완료, -1:기한 만료
+	
+	@Transient
+	private int remainingDay;
 
-   public ConsumerCoupon() {
-      super();
-   }
-   
-   public ConsumerCoupon(String consumerUserId, int couponId, int receiptId, String downloadDate, String finishDate) {
-	   this.downloadDate = downloadDate;
-	   this.couponId = couponId;
-	   this.state = 1;
-	   this.receiptId = receiptId;
-	   this.finishDate = finishDate;
-	   this.consumerUserId = consumerUserId;
-   }
-   
+	
+	public ConsumerCoupon() {
+		super();
+	}
+	
+	public int getConsumerCouponId() {
+		return consumerCouponId;
+	}
 
-   public int getConsumerCouponId() {
-      return consumerCouponId;
-   }
+	public void setConsumerCouponId(int consumerCouponId) {
+		this.consumerCouponId = consumerCouponId;
+	}
 
-   public void setConsumerCouponId(int consumerCouponId) {
-      this.consumerCouponId = consumerCouponId;
-   }
+	public ConsumerAccount getConsumer() {
+		return consumer;
+	}
 
-   public ConsumerAccount getConsumer() {
-      return consumer;
-   }
+	public void setConsumer(ConsumerAccount consumer) {
+		this.consumer = consumer;
+	}
 
-   public void setConsumer(ConsumerAccount consumer) {
-      this.consumer = consumer;
-   }
+	public String getConsumerUserId() {
+		return consumerUserId;
+	}
 
-   public String getConsumerUserId() {
-      return consumerUserId;
-   }
+	public void setConsumerUserId(String consumerUserId) {
+		this.consumerUserId = consumerUserId;
+	}
 
-   public void setConsumerUserId(String consumerUserId) {
-      this.consumerUserId = consumerUserId;
-   }
+	public Coupon getCoupon() {
+		return coupon;
+	}
 
-   public Coupon getCoupon() {
-      return coupon;
-   }
+	public void setCoupon(Coupon coupon) {
+		this.coupon = coupon;
+	}
 
-   public void setCoupon(Coupon coupon) {
-      this.coupon = coupon;
-   }
+	public int getCouponId() {
+		return couponId;
+	}
 
-   public int getCouponId() {
-      return couponId;
-   }
+	public void setCouponId(int couponId) {
+		this.couponId = couponId;
+	}
 
-   public void setCouponId(int couponId) {
-      this.couponId = couponId;
-   }
+	public LocalDateTime getDownloadDate() {
+		return downloadDate;
+	}
 
-   public String getDownloadDate() {
-      return downloadDate;
-   }
+	public void setDownloadDate(LocalDateTime downloadDate) {
+		this.downloadDate = downloadDate;
+	}
 
-   public void setDownloadDate(String downloadDate) {
-      this.downloadDate = downloadDate;
-   }
+	public LocalDateTime getFinishDate() {
+		return finishDate;
+	}
 
-   public String getFinishDate() {
-      return finishDate;
-   }
+	public void setFinishDate(LocalDateTime finishDate) {
+		this.finishDate = finishDate;
+	}
 
-   public void setFinishDate(String finishDate) {
-      this.finishDate = finishDate;
-   }
+	public LocalDateTime getUseDate() {
+		return useDate;
+	}
 
-   public String getUseDate() {
-      return useDate;
-   }
+	public void setUseDate(LocalDateTime useDate) {
+		this.useDate = useDate;
+	}
 
-   public void setUseDate(String useDate) {
-      this.useDate = useDate;
-   }
+	public int getState() {
+		return state;
+	}
 
-   public int getState() {
-      return state;
-   }
+	public void setState(int state) {
+		this.state = state;
+	}
 
-   public void setState(int state) {
-      this.state = state;
-   }
+	public int getReceiptId() {
+		return receiptId;
+	}
 
-   public int getReceiptId() {
-      return receiptId;
-   }
+	public void setReceiptId(int receiptId) {
+		this.receiptId = receiptId;
+	}
 
-   public void setReceiptId(int receiptId) {
-      this.receiptId = receiptId;
-   }
-   
-   
-   
+	public int getRemainingDay() {
+		return remainingDay;
+	}
+
+	public void setRemainingDay(int remainingDay) {
+		this.remainingDay = remainingDay;
+	}
+	
+	
 }

@@ -1,14 +1,19 @@
 package com.hi031.shh.service;
 
+import javax.servlet.http.HttpSession;
+
+import java.time.LocalDateTime;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
-import javax.servlet.http.HttpSession;
+import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -187,6 +192,7 @@ public class ShhImpl implements ShhFacade {
 	
 	@Override
 	public Coupon insertCoupon(Coupon coupon) {
+		coupon.setFinishDateForDb(coupon.getFinishDate().atStartOfDay().plusHours(23).plusMinutes(59).plusSeconds(59));
 		Coupon newCoupon = couponRepo.save(coupon);
 		return newCoupon;
 	}
@@ -225,7 +231,10 @@ public class ShhImpl implements ShhFacade {
 	}
 	
 	@Override
-	public Link updateLink(Link link) {
+	public Link updateLink(Link link, int state, int management) {
+		link.setState(state);
+		link.setManagement(management);
+		
 		return linkRepo.save(link);
 	}
 
@@ -319,6 +328,11 @@ public class ShhImpl implements ShhFacade {
 	}
 	
 	@Override
+	public Link getLinkByLinkId(String linkId) {
+		return linkRepo.findByLinkId(linkId);
+	}
+	
+	@Override
 	public long countByProposerId(String proposerId) {
 		return linkRepo.countByProposerId(proposerId);
 	}
@@ -401,8 +415,10 @@ public class ShhImpl implements ShhFacade {
 	}
 
 	@Override
+	@Transactional
 	public ConsumerCoupon updateConsumerCoupon(ConsumerCoupon coupon) {
-		coupon.setState(1);
+		coupon.setState(0);
+		coupon.setUseDate(LocalDateTime.now());
 		return consumerCouponRepo.save(coupon);
 	}
 	
@@ -418,6 +434,26 @@ public class ShhImpl implements ShhFacade {
 	}
 
 
+	@Override
+	public ConsumerCoupon getConsumerCoupon(int consumerCouponId) {
+		Optional<ConsumerCoupon> result = consumerCouponRepo.findById(consumerCouponId);
+		
+		if (result.isPresent()) {
+			return result.get();
+		} else {
+			return null;
+		}
+	}
 
+	public List<Link> getLinkAlarm(int isWatched, String storeId) {
+		List<Link> list = linkRepo.findTop7ByIsWatchedAndReceiverIdOrderByProposalDateDesc(isWatched, storeId);
+		return list;
+	}
 
+	@Override
+	public Boolean isInConsumerCoupon(String storeName, String businessNum, String consumerUserId, String receiptDate) {
+		int storeId = storeRepo.findByBusinessNumAndStoreName(businessNum, storeName);
+		
+		return consumerCouponRepo.existsByStoreIdAndConsumerUserIdAndReceiptDate(storeId, consumerUserId, receiptDate);
+	}
 }

@@ -31,7 +31,7 @@ public class CouponController {
 	}
 	
 	@ResponseBody
-	@RequestMapping(method=RequestMethod.PUT)
+	@RequestMapping(path="/{couponId}", method=RequestMethod.PUT)
 	public Coupon updateCoupon(@RequestBody Coupon coupon) throws Exception {
 		return shh.updateCoupon(coupon);
 	}

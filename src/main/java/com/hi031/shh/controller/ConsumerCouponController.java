@@ -5,6 +5,7 @@ import java.util.List;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,7 +28,18 @@ public class ConsumerCouponController {
 	@Autowired
 	private ShhFacade shh;
 	
-	private ResponseWrapper responseWrapper;
+//	private ResponseWrapper responseWrapper;
+	
+	@ResponseBody
+	@GetMapping
+	public boolean isInMyCoupon( // 당일에 해당 가게 쿠폰을 만든 적이 있으면 true, 없으면 false
+			@RequestParam(value = "storename", required = true) String storeName, 
+			@RequestParam(value = "businessnum", required = true) String businessNum,
+			@RequestParam(value = "date", required = true) String date,
+			@RequestParam(value = "consumeruserid", required = true) String consumerUserId) throws Exception {
+		return shh.isInConsumerCoupon(storeName, businessNum, consumerUserId, date);
+	}
+	
 	
 	@ResponseBody
 	@RequestMapping(path="/{couponId}", method=RequestMethod.POST)
@@ -38,16 +50,14 @@ public class ConsumerCouponController {
 
 	@ResponseBody
 	@RequestMapping(method=RequestMethod.PUT)
-	public ConsumerCoupon updateCoupon(@RequestBody ConsumerCoupon coupon) throws Exception {
+	public ConsumerCoupon updateConsumerCoupon(@RequestBody ConsumerCoupon coupon) throws Exception {
 		return shh.updateConsumerCoupon(coupon);
 	}
 	
 	@ResponseBody
-	@RequestMapping(path="/{consumerAccountId}/{consumerCouponId}", method=RequestMethod.GET)
-	public ConsumerCoupon getConsumerCoupon(@PathVariable String consumerAccountId, @PathVariable int consumerCouponId) throws Exception {
-		System.out.println("consumerAccountId: " + consumerAccountId + ", consumerCouponId: " + consumerCouponId);
-		return null;
-//		return shh.getCoupon(consumerCouponId);
+  @RequestMapping(path="/{consumerCouponId}", method=RequestMethod.GET)
+	public ConsumerCoupon getConsumerCoupon(@PathVariable int consumerCouponId) throws Exception {
+		return shh.getConsumerCoupon(consumerCouponId);
 	}
 	
 	@ResponseBody
