@@ -26,6 +26,7 @@ public class CouponController {
 	@ResponseBody
 	@RequestMapping(method=RequestMethod.POST)
 	public Coupon insertCoupon(@RequestBody Coupon coupon) throws Exception {
+		System.out.println(coupon.getStore().getStoreId() + " " + coupon.getStore().getName());
 		return shh.insertCoupon(coupon);
 	}
 	

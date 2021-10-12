@@ -36,8 +36,8 @@ public class BusinessAccountController {
 			throw new Exception("user not found");
 		}
 		else
-			session.setAttribute("userSession", businessAccount);
-			System.out.println((BusinessAccount)session.getAttribute("userSession"));
+			session.setAttribute("businessUserSession", businessAccount);
+			System.out.println((BusinessAccount)session.getAttribute("businessUserSession"));
 		return businessAccount.getBusinessUserId();
 	}
 	
@@ -45,7 +45,7 @@ public class BusinessAccountController {
 	@ResponseBody
 	@RequestMapping(value="/api/v1/businessLogout", method=RequestMethod.GET)
 	public void businessLogout() throws Exception {
-		session.removeAttribute("userSession");
+		session.removeAttribute("businessUserSession");
 		return;
 	}
 	
@@ -93,9 +93,22 @@ public class BusinessAccountController {
 	
 	// �쉶�썝 �닔�젙 submit
 	@ResponseBody
-	@RequestMapping(value="/api/v1/businessUser", method=RequestMethod.PUT)
-	public BusinessAccount updateBusinessAccount(@RequestBody BusinessAccount businessAccount) throws Exception {
-		return shh.updateBusinessAccount(businessAccount);
+	@RequestMapping(value="/api/v1/businessUser/{curPassword}", method=RequestMethod.PUT)
+	public BusinessAccount updateBusinessAccount(@RequestBody BusinessAccount businessAccount, @PathVariable String curPassword) throws Exception {
+		BusinessAccount result = null;
+
+		System.out.println("cur:" + curPassword);
+		
+		BusinessAccount account = shh.getBusinessAccount(businessAccount.getBusinessUserId());
+		if (account != null && account.getPassword().equals(curPassword)) {
+			session.removeAttribute("businessUserSession");
+			result = shh.updateBusinessAccount(account);
+			System.out.println(result.getBusinessUserId());
+			session.setAttribute("businessUserSession", result);
+		} else {
+			throw new Exception("update exception");
+		}
+		return result;
 	}
 	
 	// �쉶�썝 �깉�눜
@@ -109,7 +122,7 @@ public class BusinessAccountController {
 		
 		BusinessAccount businessAccount = shh.getBusinessAccount(businessUserId);
 		if (businessAccount != null && businessAccount.getPassword().equals(password)) {
-			session.removeAttribute("userSession");
+			session.removeAttribute("businessUserSession");
 			result = shh.removeBusinessAccount(businessAccount);
 			System.out.println(result.getBusinessUserId());
 		} else {

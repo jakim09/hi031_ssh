@@ -1,6 +1,15 @@
 package com.hi031.shh.service;
 
+import javax.servlet.http.HttpSession;
+
 import java.time.LocalDateTime;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -10,15 +19,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Order;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.hi031.shh.domain.BusinessAccount;
 import com.hi031.shh.domain.ConsumerAccount;
 import com.hi031.shh.domain.ConsumerCoupon;
 import com.hi031.shh.domain.Coupon;
 import com.hi031.shh.domain.Link;
+import com.hi031.shh.domain.Receipt;
 import com.hi031.shh.repository.CouponRepository;
 import com.hi031.shh.repository.LinkRepository;
+import com.hi031.shh.repository.ReceiptRepository;
 import com.hi031.shh.repository.BusinessAccountRepository;
 import com.hi031.shh.repository.ConsumerAccountRepository;
 import com.hi031.shh.repository.ConsumerCouponRepository;
@@ -29,6 +42,9 @@ import com.hi031.shh.repository.StoreRepository;
 
 @Service
 public class ShhImpl implements ShhFacade {
+	@Autowired
+	private HttpSession session;
+	
 	@Autowired
 	private BusinessAccountRepository businessAccountRepo;
 	
@@ -47,6 +63,9 @@ public class ShhImpl implements ShhFacade {
 
 	@Autowired
 	private LinkRepository linkRepo;
+	
+	@Autowired
+	private ReceiptRepository receiptRepo;
 	
 	@Override
 	public BusinessAccount businessLogin(String businessUserId, String password) {
@@ -166,7 +185,7 @@ public class ShhImpl implements ShhFacade {
 
 	@Override
 	public ConsumerAccount removeConsumerAccount(ConsumerAccount consumerAccount) {
-		consumerAccount.setState(2);
+		consumerAccount.setIsAvailable(2);
 		
 		return consumerAccountRepo.save(consumerAccount);
 	}
@@ -341,10 +360,58 @@ public class ShhImpl implements ShhFacade {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
+	
+	@Transactional
 	@Override
-	public ConsumerCoupon insertConsumerCoupon(ConsumerCoupon coupon) {
-		return consumerCouponRepo.save(coupon);
+	public ConsumerCoupon insertConsumerCoupon(Receipt receipt, int couponId) {
+		Coupon coupon = getCoupon(couponId);
+		
+//		Receipt receipt = new Receipt("2021-10-10", 2, "hy");
+		
+//		ConsumerAccount consumerAccount = (ConsumerAccount) session.getAttribute("userSession");
+//		ConsumerAccount consumerAccount = getConsumerAccount("hy");
+
+		Receipt result1 = receiptRepo.save(receipt);
+		
+//		String consumerUserId = ((ConsumerAccount) session.getAttribute("consumerUserSession")).getConsumerUserId();
+		String consumerUserId = "hy";
+		
+		// 날짜 계산 format	
+		SimpleDateFormat format1 = new SimpleDateFormat ("yyyy-MM-dd");
+		SimpleDateFormat format2 = new SimpleDateFormat ("yyyy-MM-dd HH:mm:ss");	
+		// 다운로드 시간
+		Date date = new Date();
+		String downloadDate = format2.format(date);
+		
+		// 마감 날짜(시간)
+		String finishDate = "";
+		Integer validity = coupon.getValidity();
+		if (validity == null) {
+			finishDate = coupon.getFinishDate();
+		} else {
+			Calendar cal = Calendar.getInstance();
+			Date dlDate = null;
+			try {
+				dlDate = format2.parse(downloadDate);
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
+			cal.setTime(dlDate);
+			cal.add(Calendar.DATE, validity);
+			cal.set(Calendar.HOUR_OF_DAY, 23);
+			cal.set(Calendar.MINUTE, 59);
+			cal.set(Calendar.SECOND, 59);
+
+			finishDate = format2.format(cal.getTime());
+			System.out.println("cal 결과:" + finishDate);
+			
+		}
+
+		ConsumerCoupon consumerCoupon = new ConsumerCoupon(consumerUserId, couponId, result1.getReceiptId(), downloadDate, finishDate);
+		System.out.println("shhimpl.insertConsumerCoupon(): " + consumerCoupon.getConsumerUserId());
+		ConsumerCoupon result2 = consumerCouponRepo.save(consumerCoupon);
+		
+		return result2;
 	}
 
 	@Override
@@ -354,6 +421,18 @@ public class ShhImpl implements ShhFacade {
 		coupon.setUseDate(LocalDateTime.now());
 		return consumerCouponRepo.save(coupon);
 	}
+	
+	@Override
+	public List<ConsumerCoupon> getConsumerCoupons(String consumerUserId, int state) {
+		List<Order> orders = new ArrayList<Order>();
+
+		Order order1 = new Order(Sort.Direction.DESC, "downloadDate");
+		orders.add(order1);
+		
+		List<ConsumerCoupon> result = (List<ConsumerCoupon>) consumerCouponRepo.findAllByConsumerUserIdAndStateIs(consumerUserId, state, Sort.by(orders));
+		return result;
+	}
+
 
 	@Override
 	public ConsumerCoupon getConsumerCoupon(int consumerCouponId) {

@@ -39,10 +39,75 @@ public class Receipt implements Serializable {
    private String receiptDate;
    
    @ManyToOne
-   @JoinColumn(name="store_id")
+   @JoinColumn(name="store_id", insertable = false, updatable = false)
    private Store store;
-   
+
+   @Column(name="store_id")
+   private int storeId;
+
    @ManyToOne
-   @JoinColumn(name="consumer_user_id")
-   private ConsumerAccount consumerAccount;    //store.name, logoImage 사용해야 함
+   @JoinColumn(name="consumer_user_id", insertable = false, updatable = false)
+   private ConsumerAccount consumerAccount;
+   
+   @Column(name="consumer_user_id")
+   private String consumerUserId;
+   
+   public Receipt() {
+	   
+   }
+   
+   public Receipt(String receiptDate, int storeId, String consumerUserId) {
+	   this.receiptDate = receiptDate;
+	   this.storeId = storeId;
+	   this.consumerUserId = consumerUserId;
+   }
+
+	public int getReceiptId() {
+		return receiptId;
+	}
+	
+	public void setReceiptId(int receiptId) {
+		this.receiptId = receiptId;
+	}
+	
+	public String getReceiptDate() {
+		return receiptDate;
+	}
+	
+	public void setReceiptDate(String receiptDate) {
+		this.receiptDate = receiptDate;
+	}
+	
+	public Store getStore() {
+		return store;
+	}
+	
+	public void setStore(Store store) {
+		this.store = store;
+	}
+	
+	public int getStoreId() {
+		return storeId;
+	}
+	
+	public void setStoreId(int storeId) {
+		this.storeId = storeId;
+	}
+	
+	public ConsumerAccount getConsumerAccount() {
+		return consumerAccount;
+	}
+	
+	public void setConsumerAccount(ConsumerAccount consumerAccount) {
+		this.consumerAccount = consumerAccount;
+	}
+	
+	public String getConsumerUserId() {
+		return consumerUserId;
+	}
+	
+	public void setConsumerUserId(String consumerUserId) {
+		this.consumerUserId = consumerUserId;
+	}
+   
 }
