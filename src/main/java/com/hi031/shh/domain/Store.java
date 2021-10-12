@@ -30,12 +30,12 @@ public class Store implements Serializable {
 	private String telephone;
 	@Column(name="store_image1")
 	private String storeImage1;
-	@Column(name="storeImage2")
-	private String store_image2;
-	@Column(name="storeImage3")
-	private String store_image3;
-	@Column(name="logoImage")
-	private String logo_image;
+	@Column(name="store_image2")
+	private String storeImage2;
+	@Column(name="store_image3")
+	private String storeImage3;
+	@Column(name="logo_image")
+	private String logoImage;
 	private String introduce;
 	@Column(name="short_introduce")
 	private String shortIntroduce;
@@ -93,23 +93,23 @@ public class Store implements Serializable {
 	public void setStoreImage1(String storeImage1) {
 		this.storeImage1 = storeImage1;
 	}
-	public String getStore_image2() {
-		return store_image2;
+	public String getStoreImage2() {
+		return storeImage2;
 	}
-	public void setStore_image2(String store_image2) {
-		this.store_image2 = store_image2;
+	public void setStoreImage2(String storeImage2) {
+		this.storeImage2 = storeImage2;
 	}
-	public String getStore_image3() {
-		return store_image3;
+	public String getStoreImage3() {
+		return storeImage3;
 	}
-	public void setStore_image3(String store_image3) {
-		this.store_image3 = store_image3;
+	public void setStoreImage3(String storeImage3) {
+		this.storeImage3 = storeImage3;
 	}
-	public String getLogo_image() {
-		return logo_image;
+	public String getLogoImage() {
+		return logoImage;
 	}
-	public void setLogo_image(String logo_image) {
-		this.logo_image = logo_image;
+	public void setLogoImage(String logoImage) {
+		this.logoImage = logoImage;
 	}
 	public String getIntroduce() {
 		return introduce;

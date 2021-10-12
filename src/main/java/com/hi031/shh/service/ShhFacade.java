@@ -55,6 +55,7 @@ public interface ShhFacade {
 	List<Store> getStoresBySubCategory(int type, String keyword, int start, int end);
 	List<Store> getStoresByLocation(int type, String keyword, int start, int end);
 	long getMyStoreCount(String businessUserId);
+	long getAllStoreCount();
 	
 
 }

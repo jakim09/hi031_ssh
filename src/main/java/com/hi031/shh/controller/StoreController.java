@@ -26,6 +26,7 @@ public class StoreController {
 	@ResponseBody
 	@RequestMapping(method=RequestMethod.POST)
 	public Store insertStore(@RequestBody Store store) throws Exception {
+		System.out.println("insert");
 		return shh.insertStore(store);
 	}
 	
@@ -59,12 +60,23 @@ public class StoreController {
 	}
 	
 	@ResponseBody
+	@RequestMapping(path="/", method=RequestMethod.GET)
+	public ResponseWrapper getAllStores() throws Exception {
+		List<Store> results = shh.getAllStores();		
+		long total = shh.getAllStoreCount();
+		
+		responseWrapper = new ResponseWrapper(total, (List<Object>)(Object)results);
+		
+		return responseWrapper;
+	}
+	
+	@ResponseBody
 	@RequestMapping(path="/{type}{keyword}{start}{end}", method=RequestMethod.GET)
 	public ResponseWrapper getStoresByParams(@PathVariable int type, String keyword, int start, int end) throws Exception {
 		
 		if(type == 1) {
 			List<Store> results = shh.getStoresByName(type, keyword, start, end);
-			//total 어떻게 받아야 될 지 몰라서 임시로 해둠..!
+			//total �뼱�뼸寃� 諛쏆븘�빞 �맆 吏� 紐곕씪�꽌 �엫�떆濡� �빐�몺..!
 			long total = 2;
 			
 			responseWrapper = new ResponseWrapper(total, (List<Object>)(Object)results);
