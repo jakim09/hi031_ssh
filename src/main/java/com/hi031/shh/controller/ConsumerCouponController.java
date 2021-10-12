@@ -30,17 +30,6 @@ public class ConsumerCouponController {
 	
 	private ResponseWrapper responseWrapper;
 	
-	@ResponseBody
-	@GetMapping
-	public boolean isInMyCoupon( // 당일에 해당 가게 쿠폰을 만든 적이 있으면 true, 없으면 false
-			@RequestParam(value = "storename", required = true) String storeName, 
-			@RequestParam(value = "businessnum", required = true) String businessNum,
-			@RequestParam(value = "date", required = true) String date,
-			@RequestParam(value = "consumeruserid", required = true) String consumerUserId) throws Exception {
-		return shh.isInConsumerCoupon(storeName, businessNum, consumerUserId, date);
-	}
-	
-	
 //	@ResponseBody
 //	@RequestMapping(path="/{couponId}", method=RequestMethod.POST)
 //	public ConsumerCoupon insertConsumerCoupon(@RequestBody Receipt receipt, @PathVariable int couponId) throws Exception {
@@ -87,12 +76,6 @@ public class ConsumerCouponController {
 		return responseWrapper;
 	}
 	
-//	
-//	@ResponseBody
-//	@RequestMapping(path="/{storeId}/{couponId}", method=RequestMethod.GET)
-//	public Coupon getCoupon(@PathVariable int storeId, @PathVariable int couponId) throws Exception {
-//		return shh.getCoupon(couponId);
-//	}
 	
 //	@ResponseBody
 //	@RequestMapping(path="/{storeId}", method=RequestMethod.GET)

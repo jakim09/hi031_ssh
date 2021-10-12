@@ -420,7 +420,7 @@ public class ShhImpl implements ShhFacade {
 	@Override
 	public ConsumerCoupon insertConsumerCoupon(ConsumerCoupon consumerCoupon) {
 		
-		Receipt result1 = receiptRepo.save(consumerCoupon.getReceipt());
+//		Receipt result1 = receiptRepo.save(consumerCoupon.getReceipt());
 		
 //		String consumerUserId = ((ConsumerAccount) session.getAttribute("consumerUserSession")).getConsumerUserId();
 //		String consumerUserId = "hy";
@@ -485,10 +485,9 @@ public class ShhImpl implements ShhFacade {
 	}
 
 	@Override
-	public Boolean isInConsumerCoupon(String storeName, String businessNum, String consumerUserId, String receiptDate) {
-		int storeId = storeRepo.findByBusinessNumAndStoreName(businessNum, storeName);
+	public Boolean isinReceipt(String storeName, String businessNum, String consumerUserId, String receiptDate) {
+		int storeId = storeRepo.findStoreIdByBusinessNumAndStoreName(businessNum, storeName);
 		
-		return null;
-//		return consumerCouponRepo.existsByStoreIdAndConsumerUserIdAndReceiptDate(storeId, consumerUserId, receiptDate);
+		return receiptRepo.existsByStoreIdAndConsumerUserIdAndReceiptDate(storeId, consumerUserId, receiptDate);
 	}
 }

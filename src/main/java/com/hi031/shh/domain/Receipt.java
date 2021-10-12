@@ -1,6 +1,7 @@
 package com.hi031.shh.domain;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -36,7 +37,7 @@ public class Receipt implements Serializable {
    
    @Column(name="receipt_date")
    @DateTimeFormat(pattern = "yyyy-MM-dd")
-   private String receiptDate;
+   private LocalDate receiptDate;
    
    @ManyToOne
    @JoinColumn(name="store_id", insertable = false, updatable = false)
@@ -56,7 +57,7 @@ public class Receipt implements Serializable {
 	   
    }
    
-   public Receipt(String receiptDate, int storeId, String consumerUserId) {
+   public Receipt(LocalDate receiptDate, int storeId, String consumerUserId) {
 	   this.receiptDate = receiptDate;
 	   this.storeId = storeId;
 	   this.consumerUserId = consumerUserId;
@@ -70,11 +71,11 @@ public class Receipt implements Serializable {
 		this.receiptId = receiptId;
 	}
 	
-	public String getReceiptDate() {
+	public LocalDate getReceiptDate() {
 		return receiptDate;
 	}
 	
-	public void setReceiptDate(String receiptDate) {
+	public void setReceiptDate(LocalDate receiptDate) {
 		this.receiptDate = receiptDate;
 	}
 	
