@@ -33,9 +33,10 @@ public interface ShhFacade {
 	Coupon getCoupon(int couponId);	
 	List<Coupon> getCoupons(int storeId);
 
-  ConsumerCoupon getConsumerCoupon(int consumerCouponId);
-  List<ConsumerCoupon> getConsumerCoupons(String consumerUserId, int state);
-	ConsumerCoupon insertConsumerCoupon(Receipt receipt, int couponId);
+	ConsumerCoupon getConsumerCoupon(int consumerCouponId);
+	List<ConsumerCoupon> getConsumerCoupons(String consumerUserId, int state);
+//	ConsumerCoupon insertConsumerCoupon(Receipt receipt, int couponId);
+  	ConsumerCoupon insertConsumerCoupon(ConsumerCoupon coupon);
 	ConsumerCoupon updateConsumerCoupon(ConsumerCoupon coupon);
 	
 	Link insertLink(Link link);

@@ -28,7 +28,7 @@ public class ConsumerCouponController {
 	@Autowired
 	private ShhFacade shh;
 	
-//	private ResponseWrapper responseWrapper;
+	private ResponseWrapper responseWrapper;
 	
 	@ResponseBody
 	@GetMapping
@@ -41,13 +41,23 @@ public class ConsumerCouponController {
 	}
 	
 	
-	@ResponseBody
-	@RequestMapping(path="/{couponId}", method=RequestMethod.POST)
-	public ConsumerCoupon insertConsumerCoupon(@RequestBody Receipt receipt, @PathVariable int couponId) throws Exception {
-		System.out.println(couponId);
-		return shh.insertConsumerCoupon(receipt, couponId);
-	}
+//	@ResponseBody
+//	@RequestMapping(path="/{couponId}", method=RequestMethod.POST)
+//	public ConsumerCoupon insertConsumerCoupon(@RequestBody Receipt receipt, @PathVariable int couponId) throws Exception {
+//		System.out.println(couponId);
+//		return shh.insertConsumerCoupon(receipt, couponId);
+//	}
 
+	@ResponseBody
+	@RequestMapping(method=RequestMethod.POST)
+	public ConsumerCoupon insertConsumerCoupon(@RequestBody ConsumerCoupon consumerCoupon) throws Exception {
+		System.out.println(consumerCoupon.getConsumerCouponId());
+//		return shh.insertConsumerCoupon(receipt, couponId);
+		return shh.insertConsumerCoupon(consumerCoupon);
+	}
+	
+	
+	
 	@ResponseBody
 	@RequestMapping(method=RequestMethod.PUT)
 	public ConsumerCoupon updateConsumerCoupon(@RequestBody ConsumerCoupon coupon) throws Exception {
