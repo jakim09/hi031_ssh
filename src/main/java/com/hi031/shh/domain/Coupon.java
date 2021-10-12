@@ -5,12 +5,20 @@ import java.io.Serializable;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+
+import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
+import org.springframework.format.annotation.DateTimeFormat;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -21,99 +29,114 @@ import lombok.Setter;
 @Getter
 @Setter
 public class Coupon implements Serializable {
-	@Id
-	@Column(name="coupon_id")
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private int couponId;
-	
-	@ManyToOne(cascade={CascadeType.ALL})
-	@JoinColumn(name="store_id")
-	private Store store; 	//store.name, logoImage 사용해야 함
+   @Id
+   @Column(name="coupon_id")
+   @GeneratedValue(strategy=GenerationType.IDENTITY)
+   private int couponId;
+   
+//   @ManyToOne(cascade = {}, targetEntity = Store.class, fetch = FetchType.LAZY)
+//   @JoinColumn(name="store_id", insertable = false, updatable = false)
+//   @JsonIgnore
+   @ManyToOne(cascade = {})
+   @JoinColumn(name="store_id", insertable = false, updatable = false)
+   private Store store;    //store.name, logoImage 사용해야 함
+   
+   @Column(name = "store_id")
+   private int storeId;
 
-	private String name;
-	
-	private String description;
-	
-	private Integer validity;
-	
-	@Column(name="is_available")
-	private boolean available;
-	
-	@Column(name="start_date")
-	private String startDate;
-	
-	@Column(name="finish_date")
-	private String finishDate;
-	
-	public Coupon() {
-		super();
-	}
+   private String name;
+   
+   private String description;
+   
+   private Integer validity;
+   
+   @Column(name="is_available")
+   private boolean available;
+   
+   @Column(name="start_date")
+   private String startDate;
+   
+   @Column(name="finish_date")
+   @DateTimeFormat(pattern = "yyyy-MM-dd 23:59:59")
+   private String finishDate;
+   
+   public Coupon() {
+      super();
+   }
 
-	public int getCouponId() {
-		return couponId;
-	}
+   public int getCouponId() {
+      return couponId;
+   }
 
-	public void setCouponId(int couponId) {
-		this.couponId = couponId;
-	}
+   public void setCouponId(int couponId) {
+      this.couponId = couponId;
+   }
 
-	public Store getStore() {
-		return store;
-	}
+   public Store getStore() {
+      return store;
+   }
 
-	public void setStore(Store store) {
-		this.store = store;
-	}
+   public void setStore(Store store) {
+      this.store = store;
+   }
 
-	public String getName() {
-		return name;
-	}
+   public int getStoreId() {
+      return storeId;
+   }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+   public void setStoreId(int storeId) {
+      this.storeId = storeId;
+   }
 
-	public String getDescription() {
-		return description;
-	}
+   public String getName() {
+      return name;
+   }
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
+   public void setName(String name) {
+      this.name = name;
+   }
 
-	public Integer getValidity() {
-		return validity;
-	}
+   public String getDescription() {
+      return description;
+   }
 
-	public void setValidity(Integer validity) {
-		this.validity = validity;
-	}
+   public void setDescription(String description) {
+      this.description = description;
+   }
 
-	public boolean isAvailable() {
-		return available;
-	}
+   public Integer getValidity() {
+      return validity;
+   }
 
-	public void setAvailable(boolean available) {
-		this.available = available;
-	}
+   public void setValidity(Integer validity) {
+      this.validity = validity;
+   }
 
-	public String getStartDate() {
-		return startDate;
-	}
+   public boolean isAvailable() {
+      return available;
+   }
 
-	public void setStartDate(String startDate) {
-		this.startDate = startDate;
-	}
+   public void setAvailable(boolean available) {
+      this.available = available;
+   }
 
-	public String getFinishDate() {
-		return finishDate;
-	}
+   public String getStartDate() {
+      return startDate;
+   }
 
-	public void setFinishDate(String finishDate) {
-		this.finishDate = finishDate;
-	}
-	
-	
-	
-	
+   public void setStartDate(String startDate) {
+      this.startDate = startDate;
+   }
+
+   public String getFinishDate() {
+      return finishDate;
+   }
+
+   public void setFinishDate(String finishDate) {
+      this.finishDate = finishDate;
+   }
+   
+   
+   
+   
 }

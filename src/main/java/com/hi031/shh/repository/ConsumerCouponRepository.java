@@ -1,8 +1,10 @@
 package com.hi031.shh.repository;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.dao.DataAccessException;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
@@ -17,5 +19,5 @@ public interface ConsumerCouponRepository extends PagingAndSortingRepository<Con
 //	List<ConsumerCoupon> findByConsumerUserIdOrderByCoupon_FinishDate(int consumerUserId) throws DataAccessException; //마감임박순 정렬
 
 	List<ConsumerCoupon> findByConsumer_ConsumerUserIdAndStateNot(int consumerUserId, int state) throws DataAccessException; //만료 쿠폰
-	
+	Iterable<ConsumerCoupon> findAllByConsumerUserIdAndStateIs(String consumerUserId, int state, Sort sort) throws DataAccessException; //가용 가능 쿠폰
 }
