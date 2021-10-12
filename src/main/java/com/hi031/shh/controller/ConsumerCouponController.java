@@ -56,8 +56,6 @@ public class ConsumerCouponController {
 		return shh.insertConsumerCoupon(consumerCoupon);
 	}
 	
-	
-	
 	@ResponseBody
 	@RequestMapping(method=RequestMethod.PUT)
 	public ConsumerCoupon updateConsumerCoupon(@RequestBody ConsumerCoupon coupon) throws Exception {
@@ -65,14 +63,14 @@ public class ConsumerCouponController {
 	}
 	
 	@ResponseBody
-  @RequestMapping(path="/{consumerCouponId}", method=RequestMethod.GET)
+	@RequestMapping(path="/{consumerCouponId}", method=RequestMethod.GET)
 	public ConsumerCoupon getConsumerCoupon(@PathVariable int consumerCouponId) throws Exception {
 		return shh.getConsumerCoupon(consumerCouponId);
 	}
 	
 	@ResponseBody
-	@RequestMapping(path="/{consumerUserId}", method=RequestMethod.GET)
-	public ResponseWrapper getConsumerCoupons(@PathVariable String consumerUserId, @RequestParam int state) throws Exception {
+	@RequestMapping(path="/{consumerUserId}/{state}", method=RequestMethod.GET)
+	public ResponseWrapper getConsumerCoupons(@PathVariable String consumerUserId, @PathVariable int state) throws Exception {
 		System.out.println("consumerUserId: " + consumerUserId + ", state: " + state);
 //		return null;
 		List<ConsumerCoupon> results = shh.getConsumerCoupons(consumerUserId, state);
