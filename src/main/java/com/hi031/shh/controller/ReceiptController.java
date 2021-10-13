@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.hi031.shh.domain.ReceiptWrapper;
 import com.hi031.shh.service.ShhFacade;
 
 @RestController
@@ -18,7 +19,7 @@ public class ReceiptController {
 	
 	@ResponseBody
 	@GetMapping
-	public boolean isInMyCoupon( // 당일에 해당 가게 쿠폰을 만든 적이 있으면 true, 없으면 false
+	public ReceiptWrapper isInMyCoupon( // 당일에 해당 가게 쿠폰을 만든 적이 있으면 true, 없으면 false
 			@RequestParam(value = "storename", required = true) String storeName, 
 			@RequestParam(value = "businessnum", required = true) String businessNum,
 			@RequestParam(value = "date", required = true) String date,

@@ -41,7 +41,7 @@ public class Receipt implements Serializable {
    
    @Column(name="receipt_date")
    @DateTimeFormat(pattern = "yyyy-MM-dd")
-   private LocalDate receiptDate;
+   private String receiptDate;
    
    @ManyToOne(cascade = {}, targetEntity = Store.class, fetch = FetchType.LAZY)
    @JoinColumn(name="store_id", insertable = false, updatable = false)
@@ -63,7 +63,7 @@ public class Receipt implements Serializable {
 	   
    }
    
-   public Receipt(LocalDate receiptDate, int storeId, String consumerUserId) {
+   public Receipt(String receiptDate, int storeId, String consumerUserId) {
 	   this.receiptDate = receiptDate;
 	   this.storeId = storeId;
 	   this.consumerUserId = consumerUserId;
@@ -77,11 +77,11 @@ public class Receipt implements Serializable {
 		this.receiptId = receiptId;
 	}
 	
-	public LocalDate getReceiptDate() {
+	public String getReceiptDate() {
 		return receiptDate;
 	}
 	
-	public void setReceiptDate(LocalDate receiptDate) {
+	public void setReceiptDate(String receiptDate) {
 		this.receiptDate = receiptDate;
 	}
 	
