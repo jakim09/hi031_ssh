@@ -19,5 +19,5 @@ public interface StoreRepository extends PagingAndSortingRepository<Store, Integ
 	@Query("select s.storeId "
 			+ "from Store s inner join s.businessUser bu "
 			+ "where bu.businessNum = :businessNum and s.name = :storeName")
-	int findByBusinessNumAndStoreName(@Param("businessNum") String businessNum, @Param("storeName")  String storeName)throws DataAccessException;
+	int findStoreIdByBusinessNumAndStoreName(@Param("businessNum") String businessNum, @Param("storeName")  String storeName)throws DataAccessException;
 }

@@ -1,7 +1,9 @@
 package com.hi031.shh.domain;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.Period;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -24,62 +26,42 @@ import lombok.Setter;
 
 @SuppressWarnings("serial")
 @Entity
-@Table(name="consumer_coupon")
+@Table(name = "consumer_coupon")
 @Getter
 @Setter
-public class ConsumerCoupon implements Serializable{
-	@Id
-	@Column(name="consumer_coupon_id")
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+public class ConsumerCoupon implements Serializable {
+
 	private int consumerCouponId;
-	
-	@ManyToOne(cascade = {}, targetEntity = ConsumerAccount.class, fetch = FetchType.LAZY)
-	@JoinColumn(name="consumer_user_id", insertable = false, updatable = false)
-	@JsonIgnore
+
 	private ConsumerAccount consumer;
-	
-	@Column(name="consumer_user_id")
+
 	private String consumerUserId;
-	
-	@ManyToOne(cascade = {})
-	@JoinColumn(name="coupon_id", insertable = false, updatable = false)
+
 	private Coupon coupon;
-	
-	@Column(name="coupon_id")
+
 	private int couponId;
 	
-	@ManyToOne(cascade = {})
-	@JoinColumn(name="receipt_id")
 	private Receipt receipt;
-	
-	@Column(name="receipt_id", insertable = false, updatable = false)
+
 	private int receiptId;
-	
-	@Column(name="download_date")
-	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
+
 	private LocalDateTime downloadDate;
-	
-	@Column(name="finish_date")
-	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
+
 	private LocalDateTime finishDate;
-	
-	@Column(name="use_date")
-	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
+
 	private LocalDateTime useDate;
 
-	private int state; //1:사용 가능, 0:사용완료, -1:기한 만료
-	
-	@Transient
+	private int state; // 1:사용 가능, 0:사용완료, -1:기한 만료
+
 	private int remainingDay;
 
-	
 	public ConsumerCoupon() {
 		super();
 	}
-	
+
+	@Id
+	@Column(name = "consumer_coupon_id")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	public int getConsumerCouponId() {
 		return consumerCouponId;
 	}
@@ -88,6 +70,9 @@ public class ConsumerCoupon implements Serializable{
 		this.consumerCouponId = consumerCouponId;
 	}
 
+	@ManyToOne(cascade = {}, targetEntity = ConsumerAccount.class, fetch = FetchType.LAZY)
+	@JoinColumn(name = "consumer_user_id", insertable = false, updatable = false)
+	@JsonIgnore
 	public ConsumerAccount getConsumer() {
 		return consumer;
 	}
@@ -96,6 +81,7 @@ public class ConsumerCoupon implements Serializable{
 		this.consumer = consumer;
 	}
 
+	@Column(name = "consumer_user_id")
 	public String getConsumerUserId() {
 		return consumerUserId;
 	}
@@ -104,6 +90,8 @@ public class ConsumerCoupon implements Serializable{
 		this.consumerUserId = consumerUserId;
 	}
 
+	@ManyToOne(cascade = {})
+	@JoinColumn(name = "coupon_id", insertable = false, updatable = false)
 	public Coupon getCoupon() {
 		return coupon;
 	}
@@ -112,6 +100,7 @@ public class ConsumerCoupon implements Serializable{
 		this.coupon = coupon;
 	}
 
+	@Column(name = "coupon_id")
 	public int getCouponId() {
 		return couponId;
 	}
@@ -120,6 +109,9 @@ public class ConsumerCoupon implements Serializable{
 		this.couponId = couponId;
 	}
 
+	@Column(name = "download_date")
+	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
 	public LocalDateTime getDownloadDate() {
 		return downloadDate;
 	}
@@ -128,6 +120,9 @@ public class ConsumerCoupon implements Serializable{
 		this.downloadDate = downloadDate;
 	}
 
+	@Column(name = "finish_date")
+	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
 	public LocalDateTime getFinishDate() {
 		return finishDate;
 	}
@@ -136,6 +131,9 @@ public class ConsumerCoupon implements Serializable{
 		this.finishDate = finishDate;
 	}
 
+	@Column(name = "use_date")
+	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
 	public LocalDateTime getUseDate() {
 		return useDate;
 	}
@@ -152,6 +150,16 @@ public class ConsumerCoupon implements Serializable{
 		this.state = state;
 	}
 
+	@ManyToOne(cascade = {})
+	@JoinColumn(name="receipt_id")
+	public Receipt getReceipt() {
+		return receipt;
+	}
+	
+	public void setReceipt(Receipt receipt) {
+		this.receipt = receipt;
+
+  @Column(name = "receipt_id", insertable = false, updatable = false)
 	public int getReceiptId() {
 		return receiptId;
 	}
@@ -159,22 +167,24 @@ public class ConsumerCoupon implements Serializable{
 	public void setReceiptId(int receiptId) {
 		this.receiptId = receiptId;
 	}
-	
-	public Receipt getReceipt() {
-		return receipt;
-	}
-	
-	public void setReceipt(Receipt receipt) {
-		this.receipt = receipt;
-	}
 
+//	public Receipt getReceipt() {
+//		return receipt;
+//	}
+//	
+//	public void setReceipt() {
+//		this.receipt = receipt;
+//	}
+
+	@Transient
 	public int getRemainingDay() {
-		return remainingDay;
-	}
+		Period period = Period.between(LocalDate.now(), finishDate.toLocalDate());
 
+		return period.getDays();
+	}
+	
 	public void setRemainingDay(int remainingDay) {
 		this.remainingDay = remainingDay;
 	}
-	
-	
+
 }

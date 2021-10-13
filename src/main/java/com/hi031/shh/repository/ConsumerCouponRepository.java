@@ -31,6 +31,4 @@ public interface ConsumerCouponRepository extends PagingAndSortingRepository<Con
 	        , nativeQuery = true
 	    )
 	List<ConsumerCoupon> GroupByConsumer_ConsumerUserIdAndStateIs(int consumerUserId, int state) throws DataAccessException; //날짜별 쿠폰 사용내역
-
-//	boolean existsByStoreIdAndConsumerUserIdAndReceiptDate(int storeId, String consumerUserId, String receiptDate) throws DataAccessException;
 }
