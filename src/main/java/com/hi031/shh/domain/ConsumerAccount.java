@@ -8,9 +8,16 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
+
+import lombok.Getter;
+import lombok.Setter;
 
 @SuppressWarnings("serial")
 @Entity
+@Table(name="consumer_account")
+@Getter
+@Setter
 public class ConsumerAccount implements Serializable {
 	@Id
 	@Column(name="consumer_user_id")
@@ -19,9 +26,10 @@ public class ConsumerAccount implements Serializable {
 	private String name;
 	private String email;
 	@OneToMany
-	@JoinColumn(name="consumer_user_id")
+	@JoinColumn(name="coupon_id")
 	private List<Coupon> coupons;
-	private int state;
+	@Column(name="is_available")
+	private int isAvailable;
 
 	public ConsumerAccount() {}
 	
@@ -64,11 +72,11 @@ public class ConsumerAccount implements Serializable {
 	public void setCoupons(List<Coupon> coupons) {
 		this.coupons = coupons;
 	}
-	public int getState() {
-		return state;
+	public int getIsAvailable() {
+		return isAvailable;
 	}
-	public void setState(int state) {
-		this.state = state;
+	public void setIsAvailable(int isAvailable) {
+		this.isAvailable = isAvailable;
 	}
 	
 }

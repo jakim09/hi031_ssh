@@ -7,6 +7,7 @@ import com.hi031.shh.domain.ConsumerAccount;
 import com.hi031.shh.domain.ConsumerCoupon;
 import com.hi031.shh.domain.Coupon;
 import com.hi031.shh.domain.Link;
+import com.hi031.shh.domain.Receipt;
 import com.hi031.shh.domain.Store;
 
 public interface ShhFacade {
@@ -31,10 +32,12 @@ public interface ShhFacade {
 	void removeCoupon(Coupon coupon);
 	Coupon getCoupon(int couponId);	
 	List<Coupon> getCoupons(int storeId);
-	
-	ConsumerCoupon insertConsumerCoupon(ConsumerCoupon coupon);
-	ConsumerCoupon updateConsumerCoupon(ConsumerCoupon coupon);
+
 	ConsumerCoupon getConsumerCoupon(int consumerCouponId);
+	List<ConsumerCoupon> getConsumerCoupons(String consumerUserId, int state);
+//	ConsumerCoupon insertConsumerCoupon(Receipt receipt, int couponId);
+  	ConsumerCoupon insertConsumerCoupon(ConsumerCoupon coupon);
+	ConsumerCoupon updateConsumerCoupon(ConsumerCoupon coupon);
 	
 	Link insertLink(Link link);
 	Link updateLink(Link link, int state, int management);
@@ -59,5 +62,5 @@ public interface ShhFacade {
 	long getMyStoreCount(String businessUserId);
 	long getAllStoreCount();
 	
-	Boolean isInConsumerCoupon(String storeName, String businessNum, String consumerUserId, String reiceptDate);
+	Boolean isinReceipt(String storeName, String businessNum, String consumerUserId, String reiceptDate);
 }
