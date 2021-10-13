@@ -13,9 +13,12 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
 
 import org.springframework.format.annotation.DateTimeFormat;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -45,9 +48,10 @@ public class Receipt implements Serializable {
 
    @Column(name="store_id")
    private int storeId;
-
+   
    @ManyToOne
    @JoinColumn(name="consumer_user_id", insertable = false, updatable = false)
+   @JsonIgnore
    private ConsumerAccount consumerAccount;
    
    @Column(name="consumer_user_id")

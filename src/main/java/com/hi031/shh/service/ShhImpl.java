@@ -420,10 +420,10 @@ public class ShhImpl implements ShhFacade {
 	@Override
 	public ConsumerCoupon insertConsumerCoupon(ConsumerCoupon consumerCoupon) {
 		
-//		Receipt result1 = receiptRepo.save(consumerCoupon.getReceipt());
+		Receipt result1 = receiptRepo.save(consumerCoupon.getReceipt());
 		
 //		String consumerUserId = ((ConsumerAccount) session.getAttribute("consumerUserSession")).getConsumerUserId();
-//		String consumerUserId = "hy";
+		String consumerUserId = "hy";
 		
 		// 다운로드 시간
 		LocalDateTime downloadDate = LocalDateTime.now();
