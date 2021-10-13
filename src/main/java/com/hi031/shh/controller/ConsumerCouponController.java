@@ -61,7 +61,7 @@ public class ConsumerCouponController {
 	@RequestMapping(path="/{consumerUserId}/{state}", method=RequestMethod.GET)
 	public ResponseWrapper getConsumerCoupons(@PathVariable String consumerUserId, @PathVariable int state) throws Exception {
 		System.out.println("consumerUserId: " + consumerUserId + ", state: " + state);
-//		return null;
+
 		List<ConsumerCoupon> results = shh.getConsumerCoupons(consumerUserId, state);
 		
 		long total = results.size();
@@ -69,9 +69,9 @@ public class ConsumerCouponController {
 		//콘솔 확인
 		System.out.println("쿠폰 총 :" + total);
 		for (int i = 0; i < total; i++) {
-			System.out.println(i + "번째 쿠폰 id: " + results.get(i).getCouponId());
+			System.out.println(i + "번째 쿠폰 id: " + results.get(i).getConsumerCouponId());
 		}
-	
+		
 		responseWrapper = new ResponseWrapper(total, (List<Object>)(Object)results);
 		return responseWrapper;
 	}

@@ -42,7 +42,7 @@ public class ConsumerCoupon implements Serializable {
 	private Coupon coupon;
 
 	private int couponId;
-
+  
 	private Receipt receipt;
 
 //	private int receiptId;
@@ -155,6 +155,27 @@ public class ConsumerCoupon implements Serializable {
 //	@Column(name = "receipt_id")
 //	public int getReceiptId() {
 //		return receiptId;
+	@ManyToOne(cascade = {})
+	@JoinColumn(name="receipt_id")
+	public Receipt getReceipt() {
+		return receipt;
+	}
+	
+	public void setReceipt(Receipt receipt) {
+		this.receipt = receipt;
+	}
+
+	@Column(name = "receipt_id", insertable = false, updatable = false)
+	public int getReceiptId() {
+		return receiptId;
+	}
+
+	public void setReceiptId(int receiptId) {
+		this.receiptId = receiptId;
+	}
+
+//	public Receipt getReceipt() {
+//		return receipt;
 //	}
 //
 //	public void setReceiptId(int receiptId) {
