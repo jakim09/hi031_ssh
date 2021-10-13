@@ -14,6 +14,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
 
 import org.springframework.format.annotation.DateTimeFormat;
@@ -49,7 +50,7 @@ public class Receipt implements Serializable {
 
    @Column(name="store_id")
    private int storeId;
-
+  
    @ManyToOne(cascade = {}, targetEntity = ConsumerAccount.class, fetch = FetchType.LAZY)
    @JoinColumn(name="consumer_user_id", insertable = false, updatable = false)
    @JsonIgnore

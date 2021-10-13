@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Period;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -13,6 +14,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -40,10 +42,10 @@ public class ConsumerCoupon implements Serializable {
 	private Coupon coupon;
 
 	private int couponId;
-	
+  
 	private Receipt receipt;
 
-	private int receiptId;
+//	private int receiptId;
 
 	private LocalDateTime downloadDate;
 
@@ -150,6 +152,9 @@ public class ConsumerCoupon implements Serializable {
 		this.state = state;
 	}
 
+//	@Column(name = "receipt_id")
+//	public int getReceiptId() {
+//		return receiptId;
 	@ManyToOne(cascade = {})
 	@JoinColumn(name="receipt_id")
 	public Receipt getReceipt() {
@@ -172,10 +177,20 @@ public class ConsumerCoupon implements Serializable {
 //	public Receipt getReceipt() {
 //		return receipt;
 //	}
-//	
-//	public void setReceipt() {
-//		this.receipt = receipt;
+//
+//	public void setReceiptId(int receiptId) {
+//		this.receiptId = receiptId;
 //	}
+
+	@JoinColumn(name="receipt_id")
+	@OneToOne(cascade = CascadeType.PERSIST)
+	public Receipt getReceipt() {
+		return receipt;
+	}
+	
+	public void setReceipt(Receipt receipt) {
+		this.receipt = receipt;
+	}
 
 	@Transient
 	public int getRemainingDay() {
