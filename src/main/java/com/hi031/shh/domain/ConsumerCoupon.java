@@ -42,10 +42,8 @@ public class ConsumerCoupon implements Serializable {
 	private Coupon coupon;
 
 	private int couponId;
-  
-	private Receipt receipt;
 
-//	private int receiptId;
+	private int receiptId;
 
 	private LocalDateTime downloadDate;
 
@@ -151,45 +149,14 @@ public class ConsumerCoupon implements Serializable {
 	public void setState(int state) {
 		this.state = state;
 	}
-
-//	@Column(name = "receipt_id")
-//	public int getReceiptId() {
-//		return receiptId;
-	@ManyToOne(cascade = {})
-	@JoinColumn(name="receipt_id")
-	public Receipt getReceipt() {
-		return receipt;
-	}
 	
-	public void setReceipt(Receipt receipt) {
-		this.receipt = receipt;
-	}
-
-	@Column(name = "receipt_id", insertable = false, updatable = false)
+	@Column(name = "receipt_id")
 	public int getReceiptId() {
 		return receiptId;
 	}
 
 	public void setReceiptId(int receiptId) {
 		this.receiptId = receiptId;
-	}
-
-//	public Receipt getReceipt() {
-//		return receipt;
-//	}
-//
-//	public void setReceiptId(int receiptId) {
-//		this.receiptId = receiptId;
-//	}
-
-	@JoinColumn(name="receipt_id")
-	@OneToOne(cascade = CascadeType.PERSIST)
-	public Receipt getReceipt() {
-		return receipt;
-	}
-	
-	public void setReceipt(Receipt receipt) {
-		this.receipt = receipt;
 	}
 
 	@Transient

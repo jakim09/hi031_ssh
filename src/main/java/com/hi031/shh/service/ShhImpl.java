@@ -419,15 +419,15 @@ public class ShhImpl implements ShhFacade {
 	@Transactional
 	@Override
 	public ConsumerCoupon insertConsumerCoupon(ConsumerCoupon consumerCoupon) {
-		Receipt receiptResult = receiptRepo.save(consumerCoupon.getReceipt());
-		if (receiptResult == null) {
-			
-		}
-		System.out.println("impl:insertConCoup:receiptId: " + receiptResult.getReceiptId());
+//		Receipt receiptResult = receiptRepo.save(consumerCoupon.getReceipt());
+//		if (receiptResult == null) {
+//			
+//		}
+//		System.out.println("impl:insertConCoup:receiptId: " + receiptResult.getReceiptId());
 //		int receiptId = receiptResult.getReceiptId();
 //		consumerCoupon.setReceiptId(receiptId);
-		consumerCoupon.setReceipt(receiptResult);
-		System.out.println("impl:insertConCoup:receipt:receiptId: " + consumerCoupon.getReceipt().getReceiptId());
+//		consumerCoupon.setReceipt(receiptResult);
+//		System.out.println("impl:insertConCoup:receipt:receiptId: " + consumerCoupon.getReceipt().getReceiptId());
 
 		// 다운로드 시간
 		LocalDateTime downloadDate = LocalDateTime.now();
