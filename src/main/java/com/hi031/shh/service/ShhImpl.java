@@ -2,9 +2,9 @@ package com.hi031.shh.service;
 
 import javax.servlet.http.HttpSession;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.text.SimpleDateFormat;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -420,42 +420,31 @@ public class ShhImpl implements ShhFacade {
 	
 	@Transactional
 	@Override
-	public ConsumerCoupon insertConsumerCoupon(ConsumerCoupon consumerCoupon) {
-//		Receipt receiptResult = receiptRepo.save(consumerCoupon.getReceipt());
-//		if (receiptResult == null) {
-//			
-//		}
-//		System.out.println("impl:insertConCoup:receiptId: " + receiptResult.getReceiptId());
-//		int receiptId = receiptResult.getReceiptId();
-//		consumerCoupon.setReceiptId(receiptId);
-//		consumerCoupon.setReceipt(receiptResult);
-//		System.out.println("impl:insertConCoup:receipt:receiptId: " + consumerCoupon.getReceipt().getReceiptId());
+	public ConsumerCoupon insertConsumerCoupon(ConsumerCoupon consumerCoupon, LocalDate receiptDate, int storeId, String consumerUserId) {
+		// Receipt save
+		Receipt receipt = new Receipt(receiptDate, storeId, consumerUserId);
+		Receipt receiptResult = receiptRepo.save(receipt);
+		int receiptId = receiptResult.getReceiptId();
 
-		// �떎�슫濡쒕뱶 �떆媛�
+		// consumerCoupon setting
+		consumerCoupon.setReceiptId(receiptId);
+		
 		LocalDateTime downloadDate = LocalDateTime.now();
 		consumerCoupon.setDownloadDate(downloadDate);
 
-		// 留덇컧 �궇吏�(�떆媛�)
-//		String finishDate = "";
-//		Coupon coupon = consumerCoupon.getCoupon();
 		Optional<Coupon> couponResult = couponRepo.findById(consumerCoupon.getCouponId());
 		Coupon coupon = couponResult.get();
 		Integer validity = coupon.getValidity();
-		System.out.println("validity: " + validity);
-		
 		LocalDateTime finishDate = null;
 		if (validity == null) {
 			finishDate = coupon.getFinishDate().atStartOfDay();
 		} else {
 			finishDate = downloadDate.with(LocalTime.MIN).plusDays(validity).plusHours(23).plusMinutes(59).plusSeconds(59);			
 		}
-		
 		System.out.println("finishDate:" + finishDate);
 		consumerCoupon.setFinishDate(finishDate);
 		
-		System.out.println("shhimpl.insertConsumerCoupon(): " + consumerCoupon.getConsumerUserId());
 		ConsumerCoupon conCouponResult = consumerCouponRepo.save(consumerCoupon);
-		
 		return conCouponResult;
 	}
 
@@ -496,7 +485,7 @@ public class ShhImpl implements ShhFacade {
 	}
 
 	@Override
-	public ReceiptWrapper isinReceipt(String storeName, String businessNum, String consumerUserId, String receiptDate) {
+	public ReceiptWrapper isinReceipt(String storeName, String businessNum, String consumerUserId, LocalDate receiptDate) {
 		Optional<Store> storeResult = storeRepo.findByBusinessUser_BusinessNumAndName(businessNum, storeName);
 	      
 	      if (storeResult.isPresent()) {

@@ -1,10 +1,12 @@
 package com.hi031.shh.controller;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.hi031.shh.domain.BusinessAccount;
+import com.hi031.shh.domain.ConsumerAccount;
 import com.hi031.shh.domain.ConsumerCoupon;
 import com.hi031.shh.domain.Coupon;
 import com.hi031.shh.domain.Receipt;
@@ -30,6 +33,9 @@ public class ConsumerCouponController {
 	
 	private ResponseWrapper responseWrapper;
 	
+	@Autowired
+	private HttpSession session;
+	
 //	@ResponseBody
 //	@RequestMapping(path="/{couponId}", method=RequestMethod.POST)
 //	public ConsumerCoupon insertConsumerCoupon(@RequestBody Receipt receipt, @PathVariable int couponId) throws Exception {
@@ -38,11 +44,15 @@ public class ConsumerCouponController {
 //	}
 
 	@ResponseBody
-	@RequestMapping(method=RequestMethod.POST)
-	public ConsumerCoupon insertConsumerCoupon(@RequestBody ConsumerCoupon consumerCoupon) throws Exception {
+	@RequestMapping(path="/{receiptDate}/{storeId}", method=RequestMethod.POST)
+	public ConsumerCoupon insertConsumerCoupon(@RequestBody ConsumerCoupon consumerCoupon, @DateTimeFormat(pattern = "yyyy-MM-dd") @PathVariable LocalDate receiptDate, @PathVariable int storeId) throws Exception {
 		System.out.println(consumerCoupon.getConsumerCouponId());
 //		return shh.insertConsumerCoupon(receipt, couponId);
-		return shh.insertConsumerCoupon(consumerCoupon);
+		
+		// session 적용 후 수정
+//		String consumerUserId = ((ConsumerAccount) session.getAttribute("consumerUserSession")).getConsumerUserId();
+		String consumerUserId = "hy";
+		return shh.insertConsumerCoupon(consumerCoupon, receiptDate, storeId, consumerUserId);
 	}
 	
 	@ResponseBody
