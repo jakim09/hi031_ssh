@@ -1,5 +1,6 @@
 package com.hi031.shh.service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -38,7 +39,7 @@ public interface ShhFacade {
 	ConsumerCoupon getConsumerCoupon(int consumerCouponId);
 	List<ConsumerCoupon> getConsumerCoupons(String consumerUserId, int state);
 //	ConsumerCoupon insertConsumerCoupon(Receipt receipt, int couponId);
-  	ConsumerCoupon insertConsumerCoupon(ConsumerCoupon coupon);
+  	ConsumerCoupon insertConsumerCoupon(ConsumerCoupon coupon, LocalDate receiptDate, int store, String consumerUserId);
 	ConsumerCoupon updateConsumerCoupon(ConsumerCoupon coupon);
 	
 	Link insertLink(Link link);
@@ -64,5 +65,5 @@ public interface ShhFacade {
 	List<Store> getStoresByLocation(int type, String keyword, int start, int end);
 	long getMyStoreCount(String businessUserId);
 	
-	ReceiptWrapper isinReceipt(String storeName, String businessNum, String consumerUserId, String reiceptDate);
+	ReceiptWrapper isinReceipt(String storeName, String businessNum, String consumerUserId, LocalDate reiceptDate);
 }
