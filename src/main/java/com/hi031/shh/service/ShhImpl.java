@@ -196,6 +196,7 @@ public class ShhImpl implements ShhFacade {
 
 	@Override
 	public Coupon updateCoupon(Coupon coupon) {
+		coupon.setFinishDateForDb(coupon.getFinishDate().atStartOfDay().plusHours(23).plusMinutes(59).plusSeconds(59));
 		Coupon updateCoupon = couponRepo.save(coupon);
 		return updateCoupon;
 	}
