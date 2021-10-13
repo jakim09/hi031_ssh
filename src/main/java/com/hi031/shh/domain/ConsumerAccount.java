@@ -10,9 +10,14 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import lombok.Getter;
+import lombok.Setter;
+
 @SuppressWarnings("serial")
 @Entity
 @Table(name="consumer_account")
+@Getter
+@Setter
 public class ConsumerAccount implements Serializable {
 	@Id
 	@Column(name="consumer_user_id")

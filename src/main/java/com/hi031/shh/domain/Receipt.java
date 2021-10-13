@@ -6,6 +6,7 @@ import java.time.LocalDate;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -16,6 +17,8 @@ import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
 import org.springframework.format.annotation.DateTimeFormat;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -39,15 +42,17 @@ public class Receipt implements Serializable {
    @DateTimeFormat(pattern = "yyyy-MM-dd")
    private LocalDate receiptDate;
    
-   @ManyToOne
+   @ManyToOne(cascade = {}, targetEntity = Store.class, fetch = FetchType.LAZY)
    @JoinColumn(name="store_id", insertable = false, updatable = false)
+   @JsonIgnore
    private Store store;
 
    @Column(name="store_id")
    private int storeId;
 
-   @ManyToOne
+   @ManyToOne(cascade = {}, targetEntity = ConsumerAccount.class, fetch = FetchType.LAZY)
    @JoinColumn(name="consumer_user_id", insertable = false, updatable = false)
+   @JsonIgnore
    private ConsumerAccount consumerAccount;
    
    @Column(name="consumer_user_id")

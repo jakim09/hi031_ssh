@@ -40,9 +40,8 @@ public class ConsumerCoupon implements Serializable {
 	private Coupon coupon;
 
 	private int couponId;
-
-//	@JoinColumn(name="receipt_id")
-//	private Receipt receipt;
+	
+	private Receipt receipt;
 
 	private int receiptId;
 
@@ -151,7 +150,16 @@ public class ConsumerCoupon implements Serializable {
 		this.state = state;
 	}
 
-	@Column(name = "receipt_id")
+	@ManyToOne(cascade = {})
+	@JoinColumn(name="receipt_id")
+	public Receipt getReceipt() {
+		return receipt;
+	}
+	
+	public void setReceipt(Receipt receipt) {
+		this.receipt = receipt;
+
+  @Column(name = "receipt_id", insertable = false, updatable = false)
 	public int getReceiptId() {
 		return receiptId;
 	}

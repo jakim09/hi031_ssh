@@ -3,7 +3,7 @@ package com.hi031.shh.service;
 import javax.servlet.http.HttpSession;
 
 import java.time.LocalDateTime;
-
+import java.time.LocalTime;
 import java.text.SimpleDateFormat;
 
 import java.util.ArrayList;
@@ -419,33 +419,42 @@ public class ShhImpl implements ShhFacade {
 	@Transactional
 	@Override
 	public ConsumerCoupon insertConsumerCoupon(ConsumerCoupon consumerCoupon) {
-		
-//		Receipt result1 = receiptRepo.save(consumerCoupon.getReceipt());
-		
-//		String consumerUserId = ((ConsumerAccount) session.getAttribute("consumerUserSession")).getConsumerUserId();
-//		String consumerUserId = "hy";
-		
+		Receipt receiptResult = receiptRepo.save(consumerCoupon.getReceipt());
+		if (receiptResult == null) {
+			
+		}
+		System.out.println("impl:insertConCoup:receiptId: " + receiptResult.getReceiptId());
+//		int receiptId = receiptResult.getReceiptId();
+//		consumerCoupon.setReceiptId(receiptId);
+		consumerCoupon.setReceipt(receiptResult);
+		System.out.println("impl:insertConCoup:receipt:receiptId: " + consumerCoupon.getReceipt().getReceiptId());
+
 		// 다운로드 시간
 		LocalDateTime downloadDate = LocalDateTime.now();
 		consumerCoupon.setDownloadDate(downloadDate);
 
 		// 마감 날짜(시간)
 //		String finishDate = "";
-		Coupon coupon = consumerCoupon.getCoupon();
+//		Coupon coupon = consumerCoupon.getCoupon();
+		Optional<Coupon> couponResult = couponRepo.findById(consumerCoupon.getCouponId());
+		Coupon coupon = couponResult.get();
 		Integer validity = coupon.getValidity();
-		LocalDateTime finishDate = coupon.getFinishDate().atStartOfDay();
+		System.out.println("validity: " + validity);
 		
-		if (validity != null) {
-			finishDate = finishDate.plusDays(validity).plusHours(23).plusMinutes(59).plusSeconds(59);			
+		LocalDateTime finishDate = null;
+		if (validity == null) {
+			finishDate = coupon.getFinishDate().atStartOfDay();
+		} else {
+			finishDate = downloadDate.with(LocalTime.MIN).plusDays(validity).plusHours(23).plusMinutes(59).plusSeconds(59);			
 		}
 		
 		System.out.println("finishDate:" + finishDate);
 		consumerCoupon.setFinishDate(finishDate);
 		
 		System.out.println("shhimpl.insertConsumerCoupon(): " + consumerCoupon.getConsumerUserId());
-		ConsumerCoupon result2 = consumerCouponRepo.save(consumerCoupon);
+		ConsumerCoupon conCouponResult = consumerCouponRepo.save(consumerCoupon);
 		
-		return result2;
+		return conCouponResult;
 	}
 
 	@Override
