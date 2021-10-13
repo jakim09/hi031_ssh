@@ -1,10 +1,12 @@
 package com.hi031.shh.domain;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -15,6 +17,8 @@ import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
 import org.springframework.format.annotation.DateTimeFormat;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -36,17 +40,19 @@ public class Receipt implements Serializable {
    
    @Column(name="receipt_date")
    @DateTimeFormat(pattern = "yyyy-MM-dd")
-   private String receiptDate;
+   private LocalDate receiptDate;
    
-   @ManyToOne
+   @ManyToOne(cascade = {}, targetEntity = Store.class, fetch = FetchType.LAZY)
    @JoinColumn(name="store_id", insertable = false, updatable = false)
+   @JsonIgnore
    private Store store;
 
    @Column(name="store_id")
    private int storeId;
 
-   @ManyToOne
+   @ManyToOne(cascade = {}, targetEntity = ConsumerAccount.class, fetch = FetchType.LAZY)
    @JoinColumn(name="consumer_user_id", insertable = false, updatable = false)
+   @JsonIgnore
    private ConsumerAccount consumerAccount;
    
    @Column(name="consumer_user_id")
@@ -56,7 +62,7 @@ public class Receipt implements Serializable {
 	   
    }
    
-   public Receipt(String receiptDate, int storeId, String consumerUserId) {
+   public Receipt(LocalDate receiptDate, int storeId, String consumerUserId) {
 	   this.receiptDate = receiptDate;
 	   this.storeId = storeId;
 	   this.consumerUserId = consumerUserId;
@@ -70,11 +76,11 @@ public class Receipt implements Serializable {
 		this.receiptId = receiptId;
 	}
 	
-	public String getReceiptDate() {
+	public LocalDate getReceiptDate() {
 		return receiptDate;
 	}
 	
-	public void setReceiptDate(String receiptDate) {
+	public void setReceiptDate(LocalDate receiptDate) {
 		this.receiptDate = receiptDate;
 	}
 	

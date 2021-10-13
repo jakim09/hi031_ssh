@@ -48,12 +48,12 @@ public class ConsumerCoupon implements Serializable{
 	@Column(name="coupon_id")
 	private int couponId;
 	
-	@ManyToOne(cascade = {}, targetEntity = Receipt.class, fetch = FetchType.LAZY)
+	@ManyToOne(cascade = {})
 	@JoinColumn(name="receipt_id")
 	private Receipt receipt;
 	
-//	@Column(name="receipt_id")
-//	private int receiptId;
+	@Column(name="receipt_id", insertable = false, updatable = false)
+	private int receiptId;
 	
 	@Column(name="download_date")
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
@@ -152,19 +152,19 @@ public class ConsumerCoupon implements Serializable{
 		this.state = state;
 	}
 
-//	public int getReceiptId() {
-//		return receiptId;
-//	}
-//
-//	public void setReceiptId(int receiptId) {
-//		this.receiptId = receiptId;
-//	}
+	public int getReceiptId() {
+		return receiptId;
+	}
+
+	public void setReceiptId(int receiptId) {
+		this.receiptId = receiptId;
+	}
 	
 	public Receipt getReceipt() {
 		return receipt;
 	}
 	
-	public void setReceipt() {
+	public void setReceipt(Receipt receipt) {
 		this.receipt = receipt;
 	}
 
