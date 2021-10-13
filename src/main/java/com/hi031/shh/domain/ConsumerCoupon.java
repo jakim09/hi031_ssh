@@ -158,8 +158,9 @@ public class ConsumerCoupon implements Serializable {
 	
 	public void setReceipt(Receipt receipt) {
 		this.receipt = receipt;
+	}
 
-  @Column(name = "receipt_id", insertable = false, updatable = false)
+	@Column(name = "receipt_id", insertable = false, updatable = false)
 	public int getReceiptId() {
 		return receiptId;
 	}
