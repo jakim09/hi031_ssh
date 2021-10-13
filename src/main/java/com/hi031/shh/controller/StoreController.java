@@ -1,12 +1,14 @@
 package com.hi031.shh.controller;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -48,6 +50,12 @@ public class StoreController {
 	}
 	
 	@ResponseBody
+	@RequestMapping(method=RequestMethod.GET)
+	public Store getStoreByNameAndNum(@RequestParam(value = "name") String name, @RequestParam(value = "num") String num) throws Exception {
+		return shh.getStoreByNameAndNum(name, num);
+	}
+	
+	@ResponseBody
 	@RequestMapping(path="/{businessUserId}", method=RequestMethod.GET)
 	public ResponseWrapper getMyStores(@PathVariable String businessUserId) throws Exception {
 		List<Store> results = shh.getMyStores(businessUserId);
@@ -64,7 +72,7 @@ public class StoreController {
 		
 		if(type == 1) {
 			List<Store> results = shh.getStoresByName(type, keyword, start, end);
-			//total 어떻게 받아야 될 지 몰라서 임시로 해둠..!
+			//total �뼱�뼸寃� 諛쏆븘�빞 �맆 吏� 紐곕씪�꽌 �엫�떆濡� �빐�몺..!
 			long total = 2;
 			
 			responseWrapper = new ResponseWrapper(total, (List<Object>)(Object)results);

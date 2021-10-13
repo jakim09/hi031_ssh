@@ -1,6 +1,7 @@
 package com.hi031.shh.repository;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.jpa.repository.Query;
@@ -16,8 +17,5 @@ public interface StoreRepository extends PagingAndSortingRepository<Store, Integ
 	List<Store> findByBusinessUserId(String businessUserId) throws DataAccessException;
 	public long countByBusinessUserId(String businessUserId) throws DataAccessException;
 	
-	@Query("select s.storeId "
-			+ "from Store s inner join s.businessUser bu "
-			+ "where bu.businessNum = :businessNum and s.name = :storeName")
-	int findStoreIdByBusinessNumAndStoreName(@Param("businessNum") String businessNum, @Param("storeName")  String storeName)throws DataAccessException;
+	Optional<Store> findByBusinessUser_BusinessNumAndName(String businessNum, String name)throws DataAccessException;
 }
