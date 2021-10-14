@@ -28,6 +28,7 @@ public class StoreController {
 	@ResponseBody
 	@RequestMapping(method=RequestMethod.POST)
 	public Store insertStore(@RequestBody Store store) throws Exception {
+		System.out.println("insert");
 		return shh.insertStore(store);
 	}
 	
@@ -60,6 +61,17 @@ public class StoreController {
 	public ResponseWrapper getMyStores(@PathVariable String businessUserId) throws Exception {
 		List<Store> results = shh.getMyStores(businessUserId);
 		long total = shh.getMyStoreCount(businessUserId);
+		
+		responseWrapper = new ResponseWrapper(total, (List<Object>)(Object)results);
+		
+		return responseWrapper;
+	}
+	
+	@ResponseBody
+	@RequestMapping(path="/", method=RequestMethod.GET)
+	public ResponseWrapper getAllStores() throws Exception {
+		List<Store> results = shh.getAllStores();		
+		long total = shh.getAllStoreCount();
 		
 		responseWrapper = new ResponseWrapper(total, (List<Object>)(Object)results);
 		

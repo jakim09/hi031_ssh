@@ -243,6 +243,7 @@ public class ShhImpl implements ShhFacade {
 	}
 	
   public Store insertStore(Store store) {
+	  System.out.println(store.getBusinessUserId() + " " + store.getMainCategoryId() + " ¿ì¾¾");
 		Store newStore = storeRepo.save(store);
 		return newStore;
 	}
@@ -302,6 +303,11 @@ public class ShhImpl implements ShhFacade {
 	@Override
 	public long getMyStoreCount(String businessUserId) {
 		return storeRepo.countByBusinessUserId(businessUserId);
+	}
+	
+	@Override
+	public long getAllStoreCount() {
+		return storeRepo.count();
 	}
 	
 	@Override
