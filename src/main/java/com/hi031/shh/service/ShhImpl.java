@@ -498,14 +498,14 @@ public class ShhImpl implements ShhFacade {
 	@Override
 	public ReceiptWrapper isinReceipt(String storeName, String businessNum, String consumerUserId, String receiptDate) {
 		Optional<Store> storeResult = storeRepo.findByBusinessUser_BusinessNumAndName(businessNum, storeName);
-	      
 	      if (storeResult.isPresent()) {
 	    	  Store store = storeResult.get();
 	    	  boolean existReceipt = receiptRepo.existsByStoreIdAndConsumerUserIdAndReceiptDate(store.getStoreId(), consumerUserId, receiptDate);
 	    	  
 	         return new ReceiptWrapper(existReceipt, store);
 	      } else {
-	    	  return new ReceiptWrapper(false, null);
+	    	  Store store = new Store(null);
+	    	  return new ReceiptWrapper(false, store);
 	   }
 	}
 	

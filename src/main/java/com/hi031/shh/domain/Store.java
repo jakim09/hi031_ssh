@@ -56,6 +56,33 @@ public class Store implements Serializable {
 	@Column(name="short_introduce")
 	private String shortIntroduce;
 	
+	public Store() {
+	}
+	
+	public Store( String name) {
+		this.name = name;
+	}
+
+	public Store(int storeId, BusinessAccount businessUser, String businessUserId, int mainCategoryId,
+			int subCategoryId, String name, String address1, String address2, String telephone, String storeImage1,
+			String store_image2, String store_image3, String logo_image, String introduce, String shortIntroduce) {
+		this.storeId = storeId;
+		this.businessUser = businessUser;
+		this.businessUserId = businessUserId;
+		this.mainCategoryId = mainCategoryId;
+		this.subCategoryId = subCategoryId;
+		this.name = name;
+		this.address1 = address1;
+		this.address2 = address2;
+		this.telephone = telephone;
+		this.storeImage1 = storeImage1;
+		this.store_image2 = store_image2;
+		this.store_image3 = store_image3;
+		this.logo_image = logo_image;
+		this.introduce = introduce;
+		this.shortIntroduce = shortIntroduce;
+	}
+	
 	public int getStoreId() {
 		return storeId;
 	}
