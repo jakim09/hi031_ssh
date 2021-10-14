@@ -1,12 +1,14 @@
 package com.hi031.shh.controller;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -46,6 +48,12 @@ public class StoreController {
 	@RequestMapping(path="/detail/{storeId}", method=RequestMethod.GET)
 	public Store getStore(@PathVariable int storeId) throws Exception {
 		return shh.getStore(storeId);
+	}
+	
+	@ResponseBody
+	@RequestMapping(method=RequestMethod.GET)
+	public Store getStoreByNameAndNum(@RequestParam(value = "name") String name, @RequestParam(value = "num") String num) throws Exception {
+		return shh.getStoreByNameAndNum(name, num);
 	}
 	
 	@ResponseBody

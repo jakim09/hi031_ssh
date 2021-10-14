@@ -2,9 +2,9 @@ package com.hi031.shh.service;
 
 import javax.servlet.http.HttpSession;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.text.SimpleDateFormat;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,6 +26,8 @@ import com.hi031.shh.domain.ConsumerCoupon;
 import com.hi031.shh.domain.Coupon;
 import com.hi031.shh.domain.Link;
 import com.hi031.shh.domain.Receipt;
+import com.hi031.shh.domain.ReceiptWrapper;
+import com.hi031.shh.domain.RequestWrapper;
 import com.hi031.shh.repository.CouponRepository;
 import com.hi031.shh.repository.LinkRepository;
 import com.hi031.shh.repository.ReceiptRepository;
@@ -196,6 +198,7 @@ public class ShhImpl implements ShhFacade {
 
 	@Override
 	public Coupon updateCoupon(Coupon coupon) {
+		coupon.setFinishDateForDb(coupon.getFinishDate().atStartOfDay().plusHours(23).plusMinutes(59).plusSeconds(59));
 		Coupon updateCoupon = couponRepo.save(coupon);
 		return updateCoupon;
 	}
@@ -379,16 +382,16 @@ public class ShhImpl implements ShhFacade {
 ////		String consumerUserId = ((ConsumerAccount) session.getAttribute("consumerUserSession")).getConsumerUserId();
 //		String consumerUserId = "hy";
 //		
-//		// 날짜 계산 format	
+//		// �궇吏� 怨꾩궛 format	
 //		SimpleDateFormat format1 = new SimpleDateFormat ("yyyy-MM-dd");
 //		SimpleDateFormat format2 = new SimpleDateFormat ("yyyy-MM-dd HH:mm:ss");	
-//		// 다운로드 시간
+//		// �떎�슫濡쒕뱶 �떆媛�
 //		LocalDateTime downloadDate = LocalDateTime.now();
 ////		
 ////		Date date = new Date();
 ////		String downloadDate = format2.format(date);
 //		
-//		// 마감 날짜(시간)
+//		// 留덇컧 �궇吏�(�떆媛�)
 ////		String finishDate = "";
 //		LocalDate finishDate;
 //		Integer validity = coupon.getValidity();
@@ -410,7 +413,7 @@ public class ShhImpl implements ShhFacade {
 //
 ////			finishDate = format2.format(cal.getTime());
 //			finishDate = cal.getTime();
-//			System.out.println("cal 결과:" + finishDate);
+//			System.out.println("cal 寃곌낵:" + finishDate);
 //			
 //		}
 //
@@ -424,42 +427,31 @@ public class ShhImpl implements ShhFacade {
 	
 	@Transactional
 	@Override
-	public ConsumerCoupon insertConsumerCoupon(ConsumerCoupon consumerCoupon) {
-//		Receipt receiptResult = receiptRepo.save(consumerCoupon.getReceipt());
-//		if (receiptResult == null) {
-//			
-//		}
-//		System.out.println("impl:insertConCoup:receiptId: " + receiptResult.getReceiptId());
-//		int receiptId = receiptResult.getReceiptId();
-//		consumerCoupon.setReceiptId(receiptId);
-//		consumerCoupon.setReceipt(receiptResult);
-//		System.out.println("impl:insertConCoup:receipt:receiptId: " + consumerCoupon.getReceipt().getReceiptId());
+	public ConsumerCoupon insertConsumerCoupon(ConsumerCoupon consumerCoupon, LocalDate receiptDate, int storeId, String consumerUserId) {
+		// Receipt save
+		Receipt receipt = new Receipt(receiptDate, storeId, consumerUserId);
+		Receipt receiptResult = receiptRepo.save(receipt);
+		int receiptId = receiptResult.getReceiptId();
 
-		// 다운로드 시간
+		// consumerCoupon setting
+		consumerCoupon.setReceiptId(receiptId);
+		
 		LocalDateTime downloadDate = LocalDateTime.now();
 		consumerCoupon.setDownloadDate(downloadDate);
 
-		// 마감 날짜(시간)
-//		String finishDate = "";
-//		Coupon coupon = consumerCoupon.getCoupon();
 		Optional<Coupon> couponResult = couponRepo.findById(consumerCoupon.getCouponId());
 		Coupon coupon = couponResult.get();
 		Integer validity = coupon.getValidity();
-		System.out.println("validity: " + validity);
-		
 		LocalDateTime finishDate = null;
 		if (validity == null) {
 			finishDate = coupon.getFinishDate().atStartOfDay();
 		} else {
 			finishDate = downloadDate.with(LocalTime.MIN).plusDays(validity).plusHours(23).plusMinutes(59).plusSeconds(59);			
 		}
-		
 		System.out.println("finishDate:" + finishDate);
 		consumerCoupon.setFinishDate(finishDate);
 		
-		System.out.println("shhimpl.insertConsumerCoupon(): " + consumerCoupon.getConsumerUserId());
 		ConsumerCoupon conCouponResult = consumerCouponRepo.save(consumerCoupon);
-		
 		return conCouponResult;
 	}
 
@@ -500,9 +492,26 @@ public class ShhImpl implements ShhFacade {
 	}
 
 	@Override
-	public Boolean isinReceipt(String storeName, String businessNum, String consumerUserId, String receiptDate) {
-		int storeId = storeRepo.findStoreIdByBusinessNumAndStoreName(businessNum, storeName);
-		
-		return receiptRepo.existsByStoreIdAndConsumerUserIdAndReceiptDate(storeId, consumerUserId, receiptDate);
+	public ReceiptWrapper isinReceipt(String storeName, String businessNum, String consumerUserId, LocalDate receiptDate) {
+		Optional<Store> storeResult = storeRepo.findByBusinessUser_BusinessNumAndName(businessNum, storeName);
+	      
+	      if (storeResult.isPresent()) {
+	    	  Store store = storeResult.get();
+	    	  boolean existReceipt = receiptRepo.existsByStoreIdAndConsumerUserIdAndReceiptDate(store.getStoreId(), consumerUserId, receiptDate);
+	    	  
+	         return new ReceiptWrapper(existReceipt, store);
+	      } else {
+	    	  return new ReceiptWrapper(false, null);
+	   }
 	}
+	
+	public Store getStoreByNameAndNum(String name, String num) {
+		Optional<Store> result = storeRepo.findByBusinessUser_BusinessNumAndName(num, name);
+		if (result.isPresent()) {
+			return result.get();
+		} else {
+			return null;
+		}
+	}
+
 }

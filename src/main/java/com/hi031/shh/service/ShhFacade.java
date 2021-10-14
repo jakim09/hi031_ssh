@@ -1,6 +1,8 @@
 package com.hi031.shh.service;
 
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 import com.hi031.shh.domain.BusinessAccount;
 import com.hi031.shh.domain.ConsumerAccount;
@@ -8,6 +10,7 @@ import com.hi031.shh.domain.ConsumerCoupon;
 import com.hi031.shh.domain.Coupon;
 import com.hi031.shh.domain.Link;
 import com.hi031.shh.domain.Receipt;
+import com.hi031.shh.domain.ReceiptWrapper;
 import com.hi031.shh.domain.Store;
 
 public interface ShhFacade {
@@ -36,7 +39,7 @@ public interface ShhFacade {
 	ConsumerCoupon getConsumerCoupon(int consumerCouponId);
 	List<ConsumerCoupon> getConsumerCoupons(String consumerUserId, int state);
 //	ConsumerCoupon insertConsumerCoupon(Receipt receipt, int couponId);
-  	ConsumerCoupon insertConsumerCoupon(ConsumerCoupon coupon);
+  	ConsumerCoupon insertConsumerCoupon(ConsumerCoupon coupon, LocalDate receiptDate, int store, String consumerUserId);
 	ConsumerCoupon updateConsumerCoupon(ConsumerCoupon coupon);
 	
 	Link insertLink(Link link);
@@ -53,6 +56,7 @@ public interface ShhFacade {
 	Store updateStore(Store store);
 	void removeStore(Store store);
 	Store getStore(int storeId);
+	Store getStoreByNameAndNum(String name, String num);
 	List<Store> getMyStores(String businessUserId);
 	List<Store> getAllStores();
 	List<Store> getStoresByName(int type, String keyword, int start, int end);
@@ -62,5 +66,5 @@ public interface ShhFacade {
 	long getMyStoreCount(String businessUserId);
 	long getAllStoreCount();
 	
-	Boolean isinReceipt(String storeName, String businessNum, String consumerUserId, String reiceptDate);
+	ReceiptWrapper isinReceipt(String storeName, String businessNum, String consumerUserId, LocalDate reiceptDate);
 }
