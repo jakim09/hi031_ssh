@@ -72,9 +72,9 @@ public class Store implements Serializable {
 		this.address2 = address2;
 		this.telephone = telephone;
 		this.storeImage1 = storeImage1;
-		this.store_image2 = store_image2;
-		this.store_image3 = store_image3;
-		this.logo_image = logo_image;
+		this.storeImage2 = store_image2;
+		this.storeImage3 = store_image3;
+		this.logoImage = logo_image;
 		this.introduce = introduce;
 		this.shortIntroduce = shortIntroduce;
 	}
